@@ -1,0 +1,3 @@
+C:/Users/ivan/CLionProjects/MatrixOOP/cmake-build-debug/CMakeFiles/MatrixOOP.dir
+C:/Users/ivan/CLionProjects/MatrixOOP/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/ivan/CLionProjects/MatrixOOP/cmake-build-debug/CMakeFiles/rebuild_cache.dir
