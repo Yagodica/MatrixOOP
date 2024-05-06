@@ -6,8 +6,7 @@
 using std::ostream;  using std::istream;  using std::endl;
 using std::domain_error;
 
-/* PUBLIC MEMBER FUNCTIONS
- ********************************/
+// PUBLIC MEMBER FUNCTIONS
 
 Matrix::Matrix(int rows, int cols) : rows_(rows), cols_(cols)
 {
@@ -156,8 +155,7 @@ Matrix Matrix::transpose()
 }
 
 
-/* STATIC CLASS FUNCTIONS
- ********************************/
+// STATIC CLASS FUNCTIONS
 
 Matrix Matrix::createIdentity(int size)
 {
@@ -460,8 +458,7 @@ Matrix Matrix::inverse()
 }
 
 
-/* PRIVATE HELPER FUNCTIONS
- ********************************/
+// PRIVATE HELPER FUNCTIONS
 
 void Matrix::allocSpace()
 {
@@ -484,8 +481,7 @@ Matrix Matrix::expHelper(const Matrix& m, int num)
     }
 }
 
-/* NON-MEMBER FUNCTIONS
- ********************************/
+// NON-MEMBER FUNCTIONS
 
 Matrix operator+(const Matrix& m1, const Matrix& m2)
 {

@@ -1,18 +1,20 @@
 #include <iostream>
 #include "matrix/matrix.h"
 
+using namespace std;
+
 int main() {
-    Matrix A(3, 3);  // creates a 3x3 matrix initialized to 0
-    Matrix B(3, 3);  // creates a 3x3 matrix initialized to 0
+    Matrix B(2, 3);
+    Matrix A(3, 1);
 
-    Matrix F = Matrix::createIdentity(3);
+    A[0][0] = 1;
+    A[1][0] = 2;
+    A[2][0] = 3;
 
-    B(0, 0) = 9; B(0, 1) = 8; B(0, 2) = 7;
-    B(1, 0) = 6; B(1, 1) = 5; B(1, 2) = 4;
-    B(2, 0) = 3; B(2, 1) = 2; B(2, 2) = 1;
+    B[0][0] = 1; B[0][1] = 2; B[0][2] = 0;
+    B[1][0] = 3; B[1][1] = 1; B[1][2] = -1;
 
-    Matrix C = B + F;
-    std::cout << C << std::endl;
+    cout << A*B << endl;
 
     return 0;
 }
