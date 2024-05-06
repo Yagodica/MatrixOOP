@@ -14,6 +14,16 @@ class Matrix {
 
         inline double& operator()(int x, int y) { return p[x][y]; }
 
+        class Proxy {
+        public:
+            Proxy(double* row) : row_(row) {}
+            inline double& operator[](int y) { return row_[y]; }
+        private:
+            double* row_;
+        };
+
+        inline Proxy operator[](int x) { return Proxy(p[x]); }
+
         Matrix& operator+=(const Matrix&);
         Matrix& operator-=(const Matrix&);
         Matrix& operator*=(const Matrix&);
