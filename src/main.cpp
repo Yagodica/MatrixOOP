@@ -4,8 +4,11 @@
 using namespace std;
 
 int main() {
-    Matrix B = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};  // creates a 3x3 matrix and initializes it with the values in the 2D array
+    Matrix A = {{1, 2}, {3, 4}, {5, 6}};
+    Matrix B = {{7, 8}, {9, 0}};
+    Matrix C = B+A;
 
+    cout << C << endl;
 
 
     return 0;
