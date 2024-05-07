@@ -28,6 +28,19 @@ Matrix::Matrix(double** a, int rows, int cols) : rows_(rows), cols_(cols)
     }
 }
 
+Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) : rows_(values.size()), cols_(values.begin()->size()) {
+    allocSpace();
+    int i = 0;
+    for (const auto& row : values) {
+        int j = 0;
+        for (const auto& value : row) {
+            p[i][j] = value;
+            j++;
+        }
+        i++;
+    }
+}
+
 Matrix::Matrix() : rows_(1), cols_(1)
 {
     allocSpace();

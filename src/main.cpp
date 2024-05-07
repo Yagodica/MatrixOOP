@@ -4,17 +4,9 @@
 using namespace std;
 
 int main() {
-    Matrix B(2, 3);
-    Matrix A(3, 1);
+    Matrix B = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};  // creates a 3x3 matrix and initializes it with the values in the 2D array
 
-    A[0][0] = 1;
-    A[1][0] = 2;
-    A[2][0] = 3;
 
-    B[0][0] = 1; B[0][1] = 2; B[0][2] = 0;
-    B[1][0] = 3; B[1][1] = 1; B[1][2] = -1;
-
-    cout << A*B << endl;
 
     return 0;
 }

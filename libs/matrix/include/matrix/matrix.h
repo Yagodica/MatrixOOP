@@ -7,6 +7,7 @@ class Matrix {
     public:
         Matrix(int, int);
         Matrix(double**, int, int);
+        Matrix(std::initializer_list<std::initializer_list<double>> values);
         Matrix();
         ~Matrix();
         Matrix(const Matrix&);
