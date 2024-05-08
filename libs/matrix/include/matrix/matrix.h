@@ -52,9 +52,14 @@ class Matrix {
         void readSolutionsFromRREF(std::ostream& os);
         Matrix inverse();
 
+        // get
+        int getRows() const { return rows_; };
+        int getCols() const { return cols_; };
+
+
     private:
         int rows_, cols_;
-        double **p;
+        double **p{};
 
         void allocSpace();
         Matrix expHelper(const Matrix&, int);
@@ -66,5 +71,9 @@ Matrix operator*(const Matrix&, const Matrix&);
 Matrix operator*(const Matrix&, double);
 Matrix operator*(double, const Matrix&);
 Matrix operator/(const Matrix&, double);
+
+// Function prototype
+
+void check_broadcastable(const Matrix& m1, const Matrix& m2);
 
 #endif

@@ -94,10 +94,7 @@ Matrix& Matrix::operator=(const Matrix& m)
 Matrix& Matrix::operator+=(const Matrix& m)
 {
     if (rows_ != m.rows_ || cols_ != m.cols_) {
-        std::string error_message = "operands could not be broadcast together with shapes ";
-        std::string shape_a = "(" + std::to_string(rows_) + "," + std::to_string(cols_) + ")";
-        std::string shape_b = "(" + std::to_string(m.rows_) + "," + std::to_string(m.cols_) + ")";
-        throw std::invalid_argument(error_message + shape_a + " " + shape_b);
+        check_broadcastable(*this, m);
     }
 
     for (int i = 0; i < rows_; ++i) {
@@ -111,10 +108,7 @@ Matrix& Matrix::operator+=(const Matrix& m)
 Matrix& Matrix::operator-=(const Matrix& m)
 {
     if (rows_ != m.rows_ || cols_ != m.cols_) {
-        std::string error_message = "operands could not be broadcast together with shapes ";
-        std::string shape_a = "(" + std::to_string(rows_) + "," + std::to_string(cols_) + ")";
-        std::string shape_b = "(" + std::to_string(m.rows_) + "," + std::to_string(m.cols_) + ")";
-        throw std::invalid_argument(error_message + shape_a + " " + shape_b);
+        check_broadcastable(*this, m);
     }
 
     for (int i = 0; i < rows_; ++i) {
@@ -128,7 +122,7 @@ Matrix& Matrix::operator-=(const Matrix& m)
 Matrix& Matrix::operator*=(const Matrix& m)
 {
     if (cols_ != m.rows_ || rows_ != m.cols_) {
-        throw std::invalid_argument("Error: matrices have incompatible sizes for multiplication");
+        check_broadcastable(*this, m);
     }
 
     Matrix temp(rows_, m.cols_);
@@ -570,4 +564,12 @@ istream& operator>>(istream& is, Matrix& m)
         }
     }
     return is;
+}
+
+void check_broadcastable(const Matrix& m1, const Matrix& m2) {
+    std::string error_message = "operands could not be broadcast together with shapes ";
+    std::string shape_a = "(" + std::to_string(m1.getRows()) + "," + std::to_string(m1.getCols()) + ")";
+    std::string shape_b = "(" + std::to_string(m2.getRows()) + "," + std::to_string(m2.getCols()) + ")";
+
+    throw std::invalid_argument(error_message + shape_a + " " + shape_b);
 }
