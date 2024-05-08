@@ -92,6 +92,10 @@ Matrix& Matrix::operator=(const Matrix& m)
 
 Matrix& Matrix::operator+=(const Matrix& m)
 {
+    if (rows_ != m.rows_ || cols_ != m.cols_) {
+        throw std::invalid_argument("Error: matrices have different sizes");
+    }
+
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < cols_; ++j) {
             p[i][j] += m.p[i][j];
