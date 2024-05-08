@@ -1,5 +1,6 @@
 #include <stdexcept>
 #include "matrix.h"
+#include <string>
 
 #define EPS 1e-10
 
@@ -93,7 +94,10 @@ Matrix& Matrix::operator=(const Matrix& m)
 Matrix& Matrix::operator+=(const Matrix& m)
 {
     if (rows_ != m.rows_ || cols_ != m.cols_) {
-        throw std::invalid_argument("Error: matrices have different sizes");
+        std::string error_message = "operands could not be broadcast together with shapes ";
+        std::string shape_a = "(" + std::to_string(rows_) + "," + std::to_string(cols_) + ")";
+        std::string shape_b = "(" + std::to_string(m.rows_) + "," + std::to_string(m.cols_) + ")";
+        throw std::invalid_argument(error_message + shape_a + " " + shape_b);
     }
 
     for (int i = 0; i < rows_; ++i) {
@@ -106,6 +110,13 @@ Matrix& Matrix::operator+=(const Matrix& m)
 
 Matrix& Matrix::operator-=(const Matrix& m)
 {
+    if (rows_ != m.rows_ || cols_ != m.cols_) {
+        std::string error_message = "operands could not be broadcast together with shapes ";
+        std::string shape_a = "(" + std::to_string(rows_) + "," + std::to_string(cols_) + ")";
+        std::string shape_b = "(" + std::to_string(m.rows_) + "," + std::to_string(m.cols_) + ")";
+        throw std::invalid_argument(error_message + shape_a + " " + shape_b);
+    }
+
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < cols_; ++j) {
             p[i][j] -= m.p[i][j];
@@ -116,6 +127,10 @@ Matrix& Matrix::operator-=(const Matrix& m)
 
 Matrix& Matrix::operator*=(const Matrix& m)
 {
+    if (cols_ != m.rows_ || rows_ != m.cols_) {
+        throw std::invalid_argument("Error: matrices have incompatible sizes for multiplication");
+    }
+
     Matrix temp(rows_, m.cols_);
     for (int i = 0; i < temp.rows_; ++i) {
         for (int j = 0; j < temp.cols_; ++j) {
