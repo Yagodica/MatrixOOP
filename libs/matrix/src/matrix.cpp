@@ -1,6 +1,4 @@
-#include <stdexcept>
 #include "matrix.h"
-#include <string>
 
 #define EPS 1e-10
 
@@ -148,6 +146,10 @@ Matrix& Matrix::operator*=(double num)
 
 Matrix& Matrix::operator/=(double num)
 {
+    if (num == 0) {
+        throw std::invalid_argument("Division by zero");
+    }
+
     for (int i = 0; i < rows_; ++i) {
         for (int j = 0; j < cols_; ++j) {
             p[i][j] /= num;

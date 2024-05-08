@@ -13,10 +13,12 @@ int main() {
     Matrix B = {
             {-1, 1},
             {1, 2},
+            {1, 2},
     };
 
+    B[1][1] = 4;
 
-    Matrix C = A + B;
+    Matrix C = A / 1;
     cout << C << endl;
 
     return 0;

@@ -1,7 +1,9 @@
 #ifndef __MATRIX_H__
 #define __MATRIX_H__
 
+#include <stdexcept>
 #include <iostream>
+#include <string>
 
 class Matrix {
     public:
@@ -17,7 +19,7 @@ class Matrix {
 
         class Proxy {
         public:
-            Proxy(double* row) : row_(row) {}
+            explicit Proxy(double* row) : row_(row) {}
             inline double& operator[](int y) { return row_[y]; }
         private:
             double* row_;
