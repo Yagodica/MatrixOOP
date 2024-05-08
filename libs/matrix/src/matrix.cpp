@@ -144,6 +144,26 @@ Matrix& Matrix::operator*=(double num)
     return *this;
 }
 
+// TODO: Деление матриц
+
+Matrix& Matrix::operator/=(const Matrix& m)
+{
+//    if (cols_ != m.rows_ || rows_ != m.cols_) {
+//        check_broadcastable(*this, m);
+//    }
+//
+//    Matrix temp(rows_, m.cols_);
+//    for (int i = 0; i < temp.rows_; ++i) {
+//        for (int j = 0; j < temp.cols_; ++j) {
+//            for (int k = 0; k < cols_; ++k) {
+//                temp.p[i][j] += (p[i][k] * m.p[k][j]);
+//            }
+//        }
+//    }
+//    return (*this = temp);
+    return *this;
+}
+
 Matrix& Matrix::operator/=(double num)
 {
     if (num == 0) {
@@ -540,10 +560,19 @@ Matrix operator*(double num, const Matrix& m)
     return (m * num);
 }
 
+Matrix operator/(const Matrix& m1, const Matrix& m2) {
+    Matrix temp(m1);
+    return (temp /= m2);
+}
+
 Matrix operator/(const Matrix& m, double num)
 {
     Matrix temp(m);
     return (temp /= num);
+}
+
+Matrix operator/(double num, const Matrix& m) {
+    return (m / num);
 }
 
 ostream& operator<<(ostream& os, const Matrix& m)
