@@ -10,7 +10,15 @@ int main() {
             {7, 8, 9},
     };
 
-    cout << A.determinant() << endl;
+    Matrix B = {
+            {2, 5, 7},
+            {6, 3, 4},
+            {5, -2, -3},
+    };
+
+    Matrix C = (A / B);
+
+    cout << C << endl;
 
     return 0;
 }

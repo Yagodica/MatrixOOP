@@ -175,23 +175,9 @@ Matrix& Matrix::operator*=(double num)
 
 Matrix& Matrix::operator/=(const Matrix& m)
 {
+    Matrix temp(m);
 
-
-
-//    if (cols_ != m.rows_ || rows_ != m.cols_) {
-//        check_broadcastable(*this, m);
-//    }
-//
-//    Matrix temp(rows_, m.cols_);
-//    for (int i = 0; i < temp.rows_; ++i) {
-//        for (int j = 0; j < temp.cols_; ++j) {
-//            for (int k = 0; k < cols_; ++k) {
-//                temp.p[i][j] += (p[i][k] * m.p[k][j]);
-//            }
-//        }
-//    }
-//    return (*this = temp);
-    return *this;
+    return (*this *= temp.inverse());
 }
 
 Matrix& Matrix::operator/=(double num)
@@ -627,7 +613,8 @@ Matrix operator*(double num, const Matrix& m)
     return (m * num);
 }
 
-Matrix operator/(const Matrix& m1, const Matrix& m2) {
+Matrix operator/(const Matrix& m1, const Matrix& m2)
+{
     Matrix temp(m1);
     return (temp /= m2);
 }
