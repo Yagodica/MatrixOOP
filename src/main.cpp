@@ -5,9 +5,9 @@ using namespace std;
 
 int main() {
     Matrix A = {
-            {1, 3, 1, 9},
-            {1, 1, -1, 1},
-            {3, 11, 5, 35}
+            {2, 5, 7},
+            {6, 3, 4},
+            {5, -2, -3}
     };
 
     Matrix B = {
@@ -18,8 +18,11 @@ int main() {
 
     B[1][1] = 4;
 
-//    Matrix C = Matrix::solve(A);
-    cout << A << endl;
+    Matrix I = Matrix::createIdentity(3);
+    Matrix AI = Matrix::augment(A, I);
+
+
+    cout << AI << endl;
 
     return 0;
 }

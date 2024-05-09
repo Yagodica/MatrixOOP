@@ -40,6 +40,33 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<double>> values) : ro
     }
 }
 
+Matrix Matrix::fromVector(const std::vector<std::vector<double>>& vec, bool rowMajor) {
+    int rows = vec.size();
+    int cols = vec[0].size();
+
+    if (rows == 0 || cols == 0) {
+        throw std::runtime_error("Invalid vector for matrix conversion");
+    }
+
+    Matrix mat(rows, cols);
+
+    if (rowMajor) {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                mat(i, j) = vec[i][j];
+            }
+        }
+    } else {
+        for (int i = 0; i < rows; ++i) {
+            for (int j = 0; j < cols; ++j) {
+                mat(j, i) = vec[i][j];
+            }
+        }
+    }
+
+    return mat;
+}
+
 Matrix::Matrix() : rows_(1), cols_(1)
 {
     allocSpace();
@@ -148,6 +175,9 @@ Matrix& Matrix::operator*=(double num)
 
 Matrix& Matrix::operator/=(const Matrix& m)
 {
+
+
+
 //    if (cols_ != m.rows_ || rows_ != m.cols_) {
 //        check_broadcastable(*this, m);
 //    }
@@ -304,15 +334,17 @@ double Matrix::dotProduct(Matrix a, Matrix b)
 }
 
 // functions on AUGMENTED matrices
-Matrix Matrix::augment(Matrix A, Matrix B)
+Matrix Matrix::augment(Matrix A, Matrix B) // Увеличение матрицы
 {
     Matrix AB(A.rows_, A.cols_ + B.cols_);
     for (int i = 0; i < AB.rows_; ++i) {
         for (int j = 0; j < AB.cols_; ++j) {
-            if (j < A.cols_)
+            if (j < A.cols_) {
                 AB(i, j) = A(i, j);
-            else
+            }
+            else {
                 AB(i, j) = B(i, j - B.cols_);
+            }
         }
     }
     return AB;

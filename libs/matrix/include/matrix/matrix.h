@@ -4,12 +4,14 @@
 #include <stdexcept>
 #include <iostream>
 #include <string>
+#include <vector>
 
 class Matrix {
     public:
         Matrix(int, int);
         Matrix(double**, int, int);
-        Matrix(std::initializer_list<std::initializer_list<double>> values);
+        Matrix(std::initializer_list<std::initializer_list<double>> values); // TODO: изучить инит через = {}
+        static Matrix fromVector(const std::vector<std::vector<double>>&, bool rowMajor = true); // TODO: конверт из вектора
         Matrix();
         ~Matrix();
         Matrix(const Matrix&);
@@ -31,9 +33,9 @@ class Matrix {
         Matrix& operator-=(const Matrix&);
         Matrix& operator*=(const Matrix&);
         Matrix& operator*=(double);
-        Matrix& operator/=(const Matrix&);
+        Matrix& operator/=(const Matrix&); // TODO: Деление матриц
         Matrix& operator/=(double);
-        Matrix  operator^(int);
+        Matrix  operator^(int); // TODO: хз
         
         friend std::ostream& operator<<(std::ostream&, const Matrix&);
         friend std::istream& operator>>(std::istream&, Matrix&);
