@@ -232,6 +232,35 @@ Matrix Matrix::transpose()
     return ret;
 }
 
+double Matrix::determinant() const { // Вычисление определителя
+    if (rows_ != cols_) {
+        throw std::runtime_error("Matrix is not square, cannot compute determinant");
+    }
+
+    if (rows_ == 1) {
+        return p[0][0];
+    } else if (rows_ == 2) {
+        return (p[0][0] * p[1][1]) - (p[0][1] * p[1][0]);
+    } else {
+        double det = 0;
+        for (int i = 0; i < cols_; ++i) {
+            Matrix submatrix(rows_ - 1, cols_ - 1);
+
+            for (int j = 1; j < rows_; ++j) {
+                int submatrixCol = 0;
+                for (int k = 0; k < cols_; ++k) {
+                    if (k != i) {
+                        submatrix(j - 1, submatrixCol++) = p[j][k];
+                    }
+                }
+            }
+
+            det += std::pow(-1, i) * p[0][i] * submatrix.determinant();
+        }
+        return det;
+    }
+}
+
 
 // STATIC CLASS FUNCTIONS
 
@@ -522,12 +551,18 @@ void Matrix::readSolutionsFromRREF(ostream& os)
     }
 }
 
-Matrix Matrix::inverse()
+Matrix Matrix::inverse() // Нахождение обратной матрицы
 {
+// TODO: Исключение
+
+    if (this->determinant() == 0) {
+        throw std::invalid_argument("The inverse matrix cannot be found because the determinant of the matrix is zero");
+    }
+
     Matrix I = Matrix::createIdentity(rows_);
     Matrix AI = Matrix::augment(*this, I);
-    Matrix U = AI.gaussianEliminate();
-    Matrix IAInverse = U.rowReduceFromGaussian();
+    Matrix U = AI.gaussianEliminate(); // TODO: разобраться
+    Matrix IAInverse = U.rowReduceFromGaussian(); // TODO: разобраться
     Matrix AInverse(rows_, cols_);
     for (int i = 0; i < AInverse.rows_; ++i) {
         for (int j = 0; j < AInverse.cols_; ++j) {

@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 
 class Matrix {
     public:
@@ -43,6 +44,8 @@ class Matrix {
         void swapRows(int, int);
         Matrix transpose();
 
+        double determinant() const;
+
         static Matrix createIdentity(int);
         static Matrix solve(Matrix, Matrix);
         static Matrix bandSolve(Matrix, Matrix, int);
@@ -55,7 +58,7 @@ class Matrix {
         Matrix gaussianEliminate();
         Matrix rowReduceFromGaussian();
         void readSolutionsFromRREF(std::ostream& os);
-        Matrix inverse();
+        Matrix inverse(); // Нахождение обратной матрицы
 
         // get
         int getRows() const { return rows_; };
