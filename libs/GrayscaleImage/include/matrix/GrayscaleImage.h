@@ -1,0 +1,10 @@
+#ifndef MATRIXOOP_GRAYSCALEIMAGE_H
+#define MATRIXOOP_GRAYSCALEIMAGE_H
+
+
+class GrayscaleImage {
+
+};
+
+
+#endif //MATRIXOOP_GRAYSCALEIMAGE_H
