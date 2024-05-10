@@ -171,8 +171,6 @@ Matrix& Matrix::operator*=(double num)
     return *this;
 }
 
-// TODO: Деление матриц
-
 Matrix& Matrix::operator/=(const Matrix& m)
 {
     Matrix temp(m);
@@ -207,6 +205,8 @@ void Matrix::swapRows(int r1, int r2)
     p[r2] = temp;
 }
 
+
+// TODO: транспонирование
 Matrix Matrix::transpose()
 {
     Matrix ret(cols_, rows_);
@@ -539,8 +539,6 @@ void Matrix::readSolutionsFromRREF(ostream& os)
 
 Matrix Matrix::inverse() // Нахождение обратной матрицы
 {
-// TODO: Исключение
-
     if (this->determinant() == 0) {
         throw std::invalid_argument("The inverse matrix cannot be found because the determinant of the matrix is zero");
     }
@@ -571,6 +569,10 @@ void Matrix::allocSpace()
 
 Matrix Matrix::expHelper(const Matrix& m, int num)
 {
+    if (num < 0) {
+        throw std::invalid_argument("The number is negative");
+    }
+
     if (num == 0) { 
         return createIdentity(m.rows_);
     } else if (num == 1) {

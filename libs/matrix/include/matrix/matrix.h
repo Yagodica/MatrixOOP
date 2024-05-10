@@ -9,14 +9,15 @@
 
 class Matrix {
     public:
-        Matrix(int, int);
-        Matrix(double**, int, int);
-        Matrix(std::initializer_list<std::initializer_list<double>> values); // TODO: изучить инит через = {}
-        static Matrix fromVector(const std::vector<std::vector<double>>&, bool rowMajor = true); // TODO: конверт из вектора
-        Matrix();
-        ~Matrix();
-        Matrix(const Matrix&);
-        Matrix& operator=(const Matrix&);
+        // Конструкторы
+        Matrix(); // Конструктор по умолчанию
+        Matrix(int, int); // Конструктор матрицы с заданным количеством строк и столбцов
+        Matrix(double**, int, int); // Конструктор матрицы из двумерного массива
+        Matrix(const Matrix&); // Копирующий конструктор
+        Matrix(std::initializer_list<std::initializer_list<double>> values); // Конструктор матрицы из списка инициализации // TODO: изучить инит через = {}
+        static Matrix fromVector(const std::vector<std::vector<double>>&, bool rowMajor = true); // Статический метод для создания матрицы из вектора // TODO: конверт из вектора
+
+        ~Matrix(); // Деструктор
 
         inline double& operator()(int x, int y) { return p[x][y]; }
 
@@ -30,13 +31,16 @@ class Matrix {
 
         inline Proxy operator[](int x) { return Proxy(p[x]); }
 
+        // TODO: сравнение
+
+        Matrix& operator=(const Matrix&);
         Matrix& operator+=(const Matrix&);
         Matrix& operator-=(const Matrix&);
         Matrix& operator*=(const Matrix&);
         Matrix& operator*=(double);
-        Matrix& operator/=(const Matrix&); // TODO: Деление матриц
+        Matrix& operator/=(const Matrix&);
         Matrix& operator/=(double);
-        Matrix  operator^(int); // TODO: хз
+        Matrix  operator^(int); // Возведение в степень
         
         friend std::ostream& operator<<(std::ostream&, const Matrix&);
         friend std::istream& operator>>(std::istream&, Matrix&);
