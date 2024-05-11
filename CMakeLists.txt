@@ -11,12 +11,19 @@ set(FOO_SOURCE_DIR
 )
 set(FOO_SOURCE
         ${FOO_SOURCE_DIR}/main.cpp
+        ${FOO_SOURCE_DIR}/GrayscaleImage.cpp
 )
 set(FOO_LIBRARIES_DIR
         libs
 )
 set(FOO_LIBRARIES
         matrix
+)
+
+set(FOO_LOCAL_LIBRARY_DIR
+        include
+)
+set(LOCAL_LIBRARY
         GrayscaleImage
 )
 
@@ -25,6 +32,10 @@ project(${FOO_PROJECT_NAME})
 # Project
 
 add_executable(${FOO_PROJECT_NAME} ${FOO_SOURCE})
+
+foreach(LIBRARY ${LOCAL_LIBRARY})
+    add_subdirectory("${FOO_LOCAL_LIBRARY_DIR}/${LIBRARY}")
+endforeach(LIBRARY)
 
 foreach(LIBRARY ${FOO_LIBRARIES})
     add_subdirectory("${FOO_LIBRARIES_DIR}/${LIBRARY}")

@@ -1,5 +1,6 @@
 #include <iostream>
 #include "matrix/matrix.h"
+#include "GrayscaleImage/GrayscaleImage.h"
 
 using namespace std;
 

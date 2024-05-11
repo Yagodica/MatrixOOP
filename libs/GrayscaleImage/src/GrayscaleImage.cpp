@@ -1,1 +1,0 @@
-#include "GrayscaleImage/GrayscaleImage.h"
