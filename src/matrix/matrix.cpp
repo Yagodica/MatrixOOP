@@ -220,7 +220,7 @@ Matrix Matrix::transpose()
 
 double Matrix::determinant() const { // Вычисление определителя
     if (rows_ != cols_) {
-        throw std::runtime_error("Matrix is not square, cannot compute determinant");
+        throw std::runtime_error("matrix is not square, cannot compute determinant");
     }
 
     if (rows_ == 1) {

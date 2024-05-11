@@ -17,7 +17,7 @@ int main() {
             {5, -2, -3},
     };
 
-//    Matrix C = (A / B);
+//    matrix C = (A / B);
     Matrix C = A^4;
 
     cout << C << endl;
