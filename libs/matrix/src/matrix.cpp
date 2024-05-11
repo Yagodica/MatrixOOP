@@ -45,7 +45,7 @@ Matrix Matrix::fromVector(const std::vector<std::vector<double>>& vec, bool rowM
     int cols = vec[0].size();
 
     if (rows == 0 || cols == 0) {
-        throw std::runtime_error("Invalid vector for matrix conversion");
+        throw std::runtime_error("Invalid vector for GrayscaleImage conversion");
     }
 
     Matrix mat(rows, cols);
@@ -271,7 +271,7 @@ Matrix Matrix::solve(Matrix A, Matrix b)
     for (int i = 0; i < A.rows_; ++i) {
         if (A.p[i][i] == 0) {
             // pivot 0 - throw error
-            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
+            throw domain_error("Error: the coefficient GrayscaleImage has 0 as a pivot. Please fix the input and try again.");
         }
         for (int j = i + 1; j < A.rows_; ++j) {
             for (int k = i + 1; k < A.cols_; ++k) {
@@ -311,7 +311,7 @@ Matrix Matrix::bandSolve(Matrix A, Matrix b, int k)
     for (int i = 0; i < A.rows_; ++i) {
         if (A.p[i][i] == 0) {
             // pivot 0 - throw exception
-            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
+            throw domain_error("Error: the coefficient GrayscaleImage has 0 as a pivot. Please fix the input and try again.");
         }
         for (int j = i + 1; j < A.rows_ && j <= i + bandsBelow; ++j) {
             int k = i + 1;
@@ -540,7 +540,7 @@ void Matrix::readSolutionsFromRREF(ostream& os)
 Matrix Matrix::inverse() // Нахождение обратной матрицы
 {
     if (this->determinant() == 0) {
-        throw std::invalid_argument("The inverse matrix cannot be found because the determinant of the matrix is zero");
+        throw std::invalid_argument("The inverse GrayscaleImage cannot be found because the determinant of the GrayscaleImage is zero");
     }
 
     Matrix I = Matrix::createIdentity(rows_);

@@ -10,13 +10,13 @@ set(LIBRARY_HEADERS_DIR
         include/${LIBRARY_NAME}
 )
 set(LIBRARY_HEADERS
-        ${LIBRARY_HEADERS_DIR}/matrix.h
+        ${LIBRARY_HEADERS_DIR}/GrayscaleImage.h
 )
 set(LIBRARY_SOURCE_DIR
         src
 )
 set(LIBRARY_SOURCE
-        ${LIBRARY_SOURCE_DIR}/matrix.cpp
+        ${LIBRARY_SOURCE_DIR}/GrayscaleImage.cpp
 )
 
 project(${PROJECT_NAME})

@@ -11,16 +11,13 @@ set(FOO_SOURCE_DIR
 )
 set(FOO_SOURCE
         ${FOO_SOURCE_DIR}/main.cpp
-        src/GrayscaleImage.cpp
-        include/GrayscaleImage/GrayscaleImage.h
-        libs/GrayscaleImage/src/GrayscaleImage.cpp
-        libs/GrayscaleImage/include/matrix/GrayscaleImage.h
 )
 set(FOO_LIBRARIES_DIR
         libs
 )
 set(FOO_LIBRARIES
         matrix
+        GrayscaleImage
 )
 
 project(${FOO_PROJECT_NAME})
