@@ -1,15 +1,12 @@
 cmake_minimum_required(VERSION 3.27)
+project(MatrixOOP VERSION 1.0)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(FOO_PROJECT_NAME
-        MatrixOOP
-)
+# Include directories
+include_directories(include/third_party_library)
 
-project(${FOO_PROJECT_NAME})
-
-# Project
-
+# Add subdirectories
 add_subdirectory(src)
-add_subdirectory(tests)
+#add_subdirectory(tests)

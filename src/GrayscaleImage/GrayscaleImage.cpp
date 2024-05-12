@@ -1,4 +1,4 @@
-#include "GrayscaleImage.h"
+//#include "GrayscaleImage.h"
 
 //GrayscaleImage::GrayscaleImage(int width, int height) : width(width), height(height) {
 //    Matrix pixels(width, height);

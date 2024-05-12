@@ -1,7 +1,7 @@
 #ifndef MATRIXOOP_GRAYSCALEIMAGE_H
 #define MATRIXOOP_GRAYSCALEIMAGE_H
 
-#include "matrix/matrix.h"
+#include "matrix.h"
 #include <iostream>
 #include <string>
 
