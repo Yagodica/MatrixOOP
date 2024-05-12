@@ -4,6 +4,8 @@
 #include "matrix.h"
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
 
 class GrayscaleImage {
 public:
@@ -12,8 +14,8 @@ public:
     void save(const std::string& filename);
     void applyBlurFilter();
 
-private:
     Matrix pixels;
+private:
     int width;
     int height;
 };
