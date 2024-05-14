@@ -1,9 +1,5 @@
 #include <iostream>
 #include "matrix/matrix.h"
-//#include "GrayscaleImage/GrayscaleImage.h"
-//#include "BMP.h"
-
-
 
 using namespace std;
 
@@ -25,12 +21,6 @@ int main() {
 
     cout << C << endl;
 
-
-//    BmpImage image;
-//
-//    if (image.read("sample_5184×3456.bmp")) {
-//        image.write("output.bmp");
-//    }
 
     return 0;
 }
