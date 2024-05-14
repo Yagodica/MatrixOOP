@@ -21,17 +21,18 @@ class Matrix {
 
         inline double& operator()(int x, int y) { return p[x][y]; } // оператор индексирования ()
 
-        class Proxy {
+        class Proxy { // Необходим для итерации по строке
             public:
                 explicit Proxy(double* row) : row_(row) {}
                 inline double& operator[](int y) { return row_[y]; }
             private:
                 double* row_;
-            };
+        };
 
         inline Proxy operator[](int x) { return Proxy(p[x]); } // оператор индексирования []
 
-        // TODO: сравнение
+        bool operator==(const Matrix&) const;       // оператор равенства
+        bool operator!=(const Matrix& other) const; // оператор неравенства
 
         Matrix& operator=(const Matrix&);   // оператор присваивания
         Matrix& operator+=(const Matrix&);  // сложение матриц
@@ -51,8 +52,10 @@ class Matrix {
         double determinant() const; // вычисление определителя матрицы
 
         static Matrix createIdentity(int);              // создание единичной матрицы
-        static Matrix solve(Matrix, Matrix);            // решение системы линейных уравнений
+        // TODO: неверно
+        static Matrix solve(Matrix, Matrix);            // решает систему линейных уравнений методом Гаусса с обратной подстановкой
         static Matrix bandSolve(Matrix, Matrix, int);   // решение системы линейных уравнений с диагональным преобладанием
+        // TODO: проверка на верность
 
         // functions on vectors
         static double dotProduct(Matrix, Matrix);       // скалярное произведение векторов
@@ -67,6 +70,12 @@ class Matrix {
         // get
         int getRows() const { return rows_; };
         int getCols() const { return cols_; };
+
+        // Полезное
+        // TODO: рандом
+        // TODO: фул нули
+        // TODO: фул 1
+
 
 
     private:

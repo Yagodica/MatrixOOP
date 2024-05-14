@@ -91,6 +91,25 @@ Matrix::Matrix(const Matrix& m) : rows_(m.rows_), cols_(m.cols_)
     }
 }
 
+bool Matrix::operator==(const Matrix& other) const {
+    if (rows_ != other.rows_ || cols_ != other.cols_) {
+        return false;
+    }
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            if (p[i][j] != other.p[i][j]) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+bool Matrix::operator!=(const Matrix& other) const {
+    return !(*this == other);
+}
+
+
 Matrix& Matrix::operator=(const Matrix& m)
 {
     if (this == &m) {
