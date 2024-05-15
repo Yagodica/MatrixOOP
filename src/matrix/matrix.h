@@ -14,8 +14,8 @@ class Matrix {
         Matrix(int, int); // Конструктор матрицы с заданным количеством строк и столбцов
         Matrix(double**, int, int); // Конструктор матрицы из двумерного массива
         Matrix(const Matrix&); // Копирующий конструктор
-        Matrix(std::initializer_list<std::initializer_list<double>> values); // Конструктор матрицы из списка инициализации // TODO: изучить инит через = {}
-        static Matrix fromVector(const std::vector<std::vector<double>>&, bool rowMajor = true); // Статический метод для создания матрицы из вектора // TODO: конверт из вектора
+        Matrix(std::initializer_list<std::initializer_list<double>> values); // Конструктор матрицы из списка инициализации
+        static Matrix fromVector(const std::vector<std::vector<double>>&, bool rowMajor = true); // Статический метод для создания матрицы из вектора
 
         ~Matrix(); // Деструктор
 
@@ -46,25 +46,22 @@ class Matrix {
         friend std::ostream& operator<<(std::ostream&, const Matrix&);  // перегрузка оператора << для вывода матрицы
         friend std::istream& operator>>(std::istream&, Matrix&);        // перегрузка оператора >> для ввода матрицы
 
-        void swapRows(int, int);    // обмен строк матрицы
+        void swapRows(int, int);    // поменять строки
         Matrix transpose();         // транспонирование матрицы
 
         double determinant() const; // вычисление определителя матрицы
 
         static Matrix createIdentity(int);              // создание единичной матрицы
-        // TODO: неверно
         static Matrix solve(Matrix, Matrix);            // решает систему линейных уравнений методом Гаусса с обратной подстановкой
-        static Matrix bandSolve(Matrix, Matrix, int);   // решение системы линейных уравнений с диагональным преобладанием
-        // TODO: проверка на верность
 
-        // functions on vectors
+        // функции на векторах
         static double dotProduct(Matrix, Matrix);       // скалярное произведение векторов
 
-        // functions on augmented matrices
+        // функции над расширенными матрицами
         static Matrix augment(Matrix, Matrix);          // объединение матриц в расширенную матрицу
         Matrix gaussianEliminate();                     // преобразование матрицы в ступенчатый вид
+        Matrix gaussianEliminate2();                    // преобразование матрицы в ступенчатый вид // TODO: Кал
         Matrix rowReduceFromGaussian();                 // сокращение матрицы до редуцированного ступенчатого вида
-        void readSolutionsFromRREF(std::ostream& os);   // чтение решений из матрицы в редуцированном ступенчатом виде
         Matrix inverse();                               // нахождение обратной матрицы
 
         // get
@@ -72,13 +69,11 @@ class Matrix {
         int getCols() const { return cols_; };
 
         // Полезное
-        // TODO: рандом
-        // TODO: фул нули
-        // TODO: фул 1
+        static Matrix randomMatrix(int, int, int, int);
+        static Matrix zeroMatrix(int, int);
+        Matrix removeColumns(int, int);
 
-
-
-    private:
+private:
         int rows_, cols_;
         double **p{};
 

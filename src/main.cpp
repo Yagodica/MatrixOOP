@@ -1,39 +1,21 @@
 #include <iostream>
 #include "matrix/matrix.h"
+#include <chrono>
 
 using namespace std;
 
 int main() {
+    Matrix A = Matrix::randomMatrix(1000, 1000, 0, 9);
+    Matrix B = Matrix::randomMatrix(1000, 1000, 0, 9);
 
-//    Matrix A = {
-//            {1, 2, 3},
-//            {4, 5, 6},
-//            {7, 8, 9},
-//            };
-//
-//    Matrix B = {
-//            {2, 5, 7},
-//            {6, 3, 4},
-//            {5, -2, -3},
-//            };
+    auto begin = std::chrono::steady_clock::now();
 
-    Matrix A = {
-            {2, 1, 1},
-            {1, -1, 0},
-            {3, -1, 2},
-            };
+    Matrix C = A + B;
 
+    auto end = std::chrono::steady_clock::now();
 
-    Matrix Ax = {
-            {2},
-            {-2},
-            {2},
-            };
-
-    Matrix C = Matrix::solve(A, Ax);
-
-    cout << C << endl;
-
+    auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
+    std::cout << "The time: " << elapsed_ms.count() << " ms\n";
 
     return 0;
 }

@@ -224,7 +224,6 @@ void Matrix::swapRows(int r1, int r2)
     p[r2] = temp;
 }
 
-
 // TODO: транспонирование
 Matrix Matrix::transpose()
 {
@@ -284,80 +283,69 @@ Matrix Matrix::createIdentity(int size)
     return temp;
 }
 
+//Matrix Matrix::solve(Matrix A, Matrix b)
+//{
+//    // Gaussian elimination
+//    for (int i = 0; i < A.rows_; ++i) {
+//        if (A.p[i][i] == 0) {
+//            // pivot 0 - throw error
+//            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
+//        }
+//        for (int j = i + 1; j < A.rows_; ++j) {
+//            for (int k = i + 1; k < A.cols_; ++k) {
+//                A.p[j][k] -= A.p[i][k] * (A.p[j][i] / A.p[i][i]);
+//                if (A.p[j][k] < EPS && A.p[j][k] > -1*EPS)
+//                    A.p[j][k] = 0;
+//            }
+//            b.p[j][0] -= b.p[i][0] * (A.p[j][i] / A.p[i][i]);
+//            if (A.p[j][0] < EPS && A.p[j][0] > -1*EPS)
+//                A.p[j][0] = 0;
+//            A.p[j][i] = 0;
+//        }
+//    }
+//
+//    // Back substitution
+//    Matrix x(b.rows_, 1);
+//    x.p[x.rows_ - 1][0] = b.p[x.rows_ - 1][0] / A.p[x.rows_ - 1][x.rows_ - 1];
+//    if (x.p[x.rows_ - 1][0] < EPS && x.p[x.rows_ - 1][0] > -1*EPS)
+//        x.p[x.rows_ - 1][0] = 0;
+//    for (int i = x.rows_ - 2; i >= 0; --i) {
+//        int sum = 0;
+//        for (int j = i + 1; j < x.rows_; ++j) {
+//            sum += A.p[i][j] * x.p[j][0];
+//        }
+//        x.p[i][0] = (b.p[i][0] - sum) / A.p[i][i];
+//        if (x.p[i][0] < EPS && x.p[i][0] > -1*EPS)
+//            x.p[i][0] = 0;
+//    }
+//
+//    return x;
+//}
+
 Matrix Matrix::solve(Matrix A, Matrix b)
 {
-    // Gaussian elimination
-    for (int i = 0; i < A.rows_; ++i) {
-        if (A.p[i][i] == 0) {
-            // pivot 0 - throw error
-            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
-        }
-        for (int j = i + 1; j < A.rows_; ++j) {
-            for (int k = i + 1; k < A.cols_; ++k) {
-                A.p[j][k] -= A.p[i][k] * (A.p[j][i] / A.p[i][i]);
-                if (A.p[j][k] < EPS && A.p[j][k] > -1*EPS)
-                    A.p[j][k] = 0;
+    int n = A.getRows();
+    for (int i = 0; i < n; ++i) {
+        for (int j = i + 1; j < n; ++j) {
+            double factor = A[j][i] / A[i][i];
+            b[j][0] -= factor * b[i][0];
+            for (int k = i; k < n; ++k) {
+                A[j][k] -= factor * A[i][k];
             }
-            b.p[j][0] -= b.p[i][0] * (A.p[j][i] / A.p[i][i]);
-            if (A.p[j][0] < EPS && A.p[j][0] > -1*EPS)
-                A.p[j][0] = 0;
-            A.p[j][i] = 0;
         }
     }
-
-    // Back substitution
-    Matrix x(b.rows_, 1);
-    x.p[x.rows_ - 1][0] = b.p[x.rows_ - 1][0] / A.p[x.rows_ - 1][x.rows_ - 1];
-    if (x.p[x.rows_ - 1][0] < EPS && x.p[x.rows_ - 1][0] > -1*EPS)
-        x.p[x.rows_ - 1][0] = 0;
-    for (int i = x.rows_ - 2; i >= 0; --i) {
-        int sum = 0;
-        for (int j = i + 1; j < x.rows_; ++j) {
-            sum += A.p[i][j] * x.p[j][0];
+    Matrix x(n, 1);
+    for (int i = n - 1; i >= 0; --i) {
+        x[i][0] = b[i][0];
+        for (int j = i + 1; j < n; ++j) {
+            x[i][0] -= A[i][j] * x[j][0];
         }
-        x.p[i][0] = (b.p[i][0] - sum) / A.p[i][i];
-        if (x.p[i][0] < EPS && x.p[i][0] > -1*EPS)
-            x.p[i][0] = 0;
+        x[i][0] /= A[i][i];
     }
-
     return x;
 }
 
-Matrix Matrix::bandSolve(Matrix A, Matrix b, int k)
-{
-    // optimized Gaussian elimination
-    int bandsBelow = (k - 1) / 2;
-    for (int i = 0; i < A.rows_; ++i) {
-        if (A.p[i][i] == 0) {
-            // pivot 0 - throw exception
-            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
-        }
-        for (int j = i + 1; j < A.rows_ && j <= i + bandsBelow; ++j) {
-            int k = i + 1;
-            while (k < A.cols_ && A.p[j][k]) {
-                A.p[j][k] -= A.p[i][k] * (A.p[j][i] / A.p[i][i]);
-                k++;
-            }
-            b.p[j][0] -= b.p[i][0] * (A.p[j][i] / A.p[i][i]);
-            A.p[j][i] = 0;
-        }
-    }
-
-    // Back substitution
-    Matrix x(b.rows_, 1);
-    x.p[x.rows_ - 1][0] = b.p[x.rows_ - 1][0] / A.p[x.rows_ - 1][x.rows_ - 1];
-    for (int i = x.rows_ - 2; i >= 0; --i) {
-        int sum = 0;
-        for (int j = i + 1; j < x.rows_; ++j) {
-            sum += A.p[i][j] * x.p[j][0];
-        }
-        x.p[i][0] = (b.p[i][0] - sum) / A.p[i][i];
-    }
-
-    return x;
-}
-
-// functions on VECTORS
+// функции на векторах
 double Matrix::dotProduct(Matrix a, Matrix b)
 {
     double sum = 0;
@@ -367,7 +355,7 @@ double Matrix::dotProduct(Matrix a, Matrix b)
     return sum;
 }
 
-// functions on AUGMENTED matrices
+// функции над расширенными матрицами
 Matrix Matrix::augment(Matrix A, Matrix B) // Увеличение матрицы
 {
     Matrix AB(A.rows_, A.cols_ + B.cols_);
@@ -444,6 +432,10 @@ Matrix Matrix::gaussianEliminate()
     return Ab;
 }
 
+Matrix Matrix::gaussianEliminate2() {
+
+}
+
 Matrix Matrix::rowReduceFromGaussian()
 {
     Matrix R(*this);
@@ -466,7 +458,7 @@ Matrix Matrix::rowReduceFromGaussian()
 
         // zero out elements above pivots if pivot not 0
         if (R(i, j) != 0) {
-       
+
             for (int t = i - 1; t >= 0; --t) {
                 for (int s = 0; s < cols; ++s) {
                     if (s != j) {
@@ -495,67 +487,6 @@ Matrix Matrix::rowReduceFromGaussian()
     return R;
 }
 
-void Matrix::readSolutionsFromRREF(ostream& os)
-{
-    Matrix R(*this);
-
-    // print number of solutions
-    bool hasSolutions = true;
-    bool doneSearching = false;
-    int i = 0;
-    while (!doneSearching && i < rows_)
-    {
-        bool allZeros = true;
-        for (int j = 0; j < cols_ - 1; ++j) {
-            if (R(i, j) != 0)
-                allZeros = false;
-        }
-        if (allZeros && R(i, cols_ - 1) != 0) {
-            hasSolutions = false;
-            os << "NO SOLUTIONS" << endl << endl;
-            doneSearching = true;
-        } else if (allZeros && R(i, cols_ - 1) == 0) {
-            os << "INFINITE SOLUTIONS" << endl << endl;
-            doneSearching = true;
-        } else if (rows_ < cols_ - 1) {
-            os << "INFINITE SOLUTIONS" << endl << endl;
-            doneSearching = true;
-        }
-        i++;
-    }
-    if (!doneSearching)
-        os << "UNIQUE SOLUTION" << endl << endl;
-
-    // get solutions if they exist
-    if (hasSolutions)
-    {
-        Matrix particular(cols_ - 1, 1);
-        Matrix special(cols_ - 1, 1);
-
-        for (int i = 0; i < rows_; ++i) {
-            bool pivotFound = false;
-            bool specialCreated = false;
-            for (int j = 0; j < cols_ - 1; ++j) {
-                if (R(i, j) != 0) {
-                    // if pivot variable, add b to particular
-                    if (!pivotFound) {
-                        pivotFound = true;
-                        particular(j, 0) = R(i, cols_ - 1);
-                    } else { // otherwise, add to special solution
-                        if (!specialCreated) {
-                            special = Matrix(cols_ - 1, 1);
-                            specialCreated = true;
-                        }
-                        special(j, 0) = -1 * R(i, j);
-                    }
-                }
-            }
-            os << "Special solution:" << endl << special << endl;
-        }
-        os << "Particular solution:" << endl << particular << endl;
-    }
-}
-
 Matrix Matrix::inverse() // Нахождение обратной матрицы
 {
     if (this->determinant() == 0) {
@@ -575,6 +506,43 @@ Matrix Matrix::inverse() // Нахождение обратной матрицы
     return AInverse;
 }
 
+Matrix Matrix::randomMatrix(int rows, int cols, int min, int max) {
+    Matrix A(rows, cols);
+    srand(time(0)); // seed the random number generator
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            A[i][j] = min + rand() % (max - min + 1); // generate a random number between min and max
+        }
+    }
+    return A;
+}
+
+Matrix Matrix::zeroMatrix(int rows, int cols) {
+    Matrix A(rows, cols);
+    for (int i = 0; i < rows; ++i) {
+        for (int j = 0; j < cols; ++j) {
+            A[i][j] = 0;
+        }
+    }
+    return A;
+}
+
+Matrix Matrix::removeColumns(int index1, int index2) {
+    int n = rows_;
+    int m = cols_;
+    Matrix C(n, m - (index2 - index1 + 1));
+    for (int j = 0; j < index1; ++j) {
+        for (int i = 0; i < n; ++i) {
+            C[i][j] = p[i][j];
+        }
+    }
+    for (int j = index2 + 1; j < m; ++j) {
+        for (int i = 0; i < n; ++i) {
+            C[i][j - index2 - 1 + index1] = p[i][j];
+        }
+    }
+    return C;
+}
 
 // PRIVATE HELPER FUNCTIONS
 
