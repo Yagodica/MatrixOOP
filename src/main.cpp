@@ -5,17 +5,24 @@
 using namespace std;
 
 int main() {
-    Matrix A = Matrix::randomMatrix(1000, 1000, 0, 9);
-    Matrix B = Matrix::randomMatrix(1000, 1000, 0, 9);
+    Matrix A(3, 3);
+    Matrix B(3, 2);
 
-    auto begin = std::chrono::steady_clock::now();
+    A(0, 0) = 1;
+    A(0, 1) = 2;
+    A(0, 2) = 3;
+    A(1, 0) = 4;
+    A(1, 1) = 5;
+    A(1, 2) = 6;
+    A(2, 0) = 7;
+    A(2, 1) = 8;
+    A(2, 2) = 9;
 
-    Matrix C = A + B;
+    B(0, 0) = 10; B(0, 1) = 11;
+    B(1, 0) = 12; B(1, 1) = 13;
+    B(2, 0) = 14; B(2, 1) = 15;
 
-    auto end = std::chrono::steady_clock::now();
-
-    auto elapsed_ms = std::chrono::duration_cast<std::chrono::milliseconds>(end - begin);
-    std::cout << "The time: " << elapsed_ms.count() << " ms\n";
-
+    Matrix AB = Matrix::augment(A, B);
+    cout << AB;
     return 0;
 }
