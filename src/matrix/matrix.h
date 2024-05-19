@@ -58,7 +58,7 @@ class Matrix {
         static double dotProduct(Matrix, Matrix);       // скалярное произведение векторов
 
         // функции над расширенными матрицами
-        static Matrix augment(Matrix, Matrix);          // объединение матриц в расширенную матрицу
+        static Matrix augment(Matrix&, Matrix&);        // объединение матриц в расширенную матрицу
         Matrix gaussianEliminate();                     // преобразование матрицы в ступенчатый вид
         Matrix gaussianEliminate2();                    // преобразование матрицы в ступенчатый вид // TODO: Кал
         Matrix rowReduceFromGaussian();                 // сокращение матрицы до редуцированного ступенчатого вида

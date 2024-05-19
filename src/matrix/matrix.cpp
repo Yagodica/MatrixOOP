@@ -322,26 +322,50 @@ Matrix Matrix::createIdentity(int size)
 //    return x;
 //}
 
-Matrix Matrix::solve(Matrix A, Matrix b)
-{
+Matrix Matrix::solve(Matrix A, Matrix b) {
     int n = A.getRows();
+    if (n != A.getCols() || n != b.getRows()) {
+        throw std::invalid_argument("Invalid dimensions");
+    }
+
+    Matrix aug = Matrix::augment(A, b);
+
     for (int i = 0; i < n; ++i) {
+        int max_row = i;
         for (int j = i + 1; j < n; ++j) {
-            double factor = A[j][i] / A[i][i];
-            b[j][0] -= factor * b[i][0];
-            for (int k = i; k < n; ++k) {
-                A[j][k] -= factor * A[i][k];
+            if (std::abs(aug[j][i]) > std::abs(aug[max_row][i])) {
+                max_row = j;
+            }
+        }
+        if (i != max_row) {
+            aug.swapRows(i, max_row);
+        }
+
+        if (aug[i][i] == 0) {
+            throw std::runtime_error("Division by zero");
+        }
+
+        for (int j = i + 1; j < n; ++j) {
+            double factor = aug[j][i] / aug[i][i];
+            for (int k = i; k <= n; ++k) {
+                aug[j][k] -= factor * aug[i][k];
             }
         }
     }
+
     Matrix x(n, 1);
     for (int i = n - 1; i >= 0; --i) {
-        x[i][0] = b[i][0];
+        x[i][0] = aug[i][n];
         for (int j = i + 1; j < n; ++j) {
-            x[i][0] -= A[i][j] * x[j][0];
+            x[i][0] -= aug[i][j] * x[j][0];
         }
-        x[i][0] /= A[i][i];
+        x[i][0] /= aug[i][i];
+
+        if (std::abs(x[i][0]) < EPS) {
+            x[i][0] = 0;
+        }
     }
+
     return x;
 }
 
@@ -356,8 +380,12 @@ double Matrix::dotProduct(Matrix a, Matrix b)
 }
 
 // функции над расширенными матрицами
-Matrix Matrix::augment(Matrix A, Matrix B) // Увеличение матрицы
+Matrix Matrix::augment(Matrix& A, Matrix& B) // Увеличение матрицы
 {
+    if (A.rows_ != B.rows_) {
+        throw std::invalid_argument("Matrices must have the same number of rows");
+    }
+
     Matrix AB(A.rows_, A.cols_ + B.cols_);
     for (int i = 0; i < AB.rows_; ++i) {
         for (int j = 0; j < AB.cols_; ++j) {
@@ -365,7 +393,7 @@ Matrix Matrix::augment(Matrix A, Matrix B) // Увеличение матриц�
                 AB(i, j) = A(i, j);
             }
             else {
-                AB(i, j) = B(i, j - B.cols_);
+                AB(i, j) = B(i, j - A.cols_);
             }
         }
     }
