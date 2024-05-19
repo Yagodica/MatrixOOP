@@ -2,7 +2,9 @@
 
 #define EPS 1e-10
 
-using std::ostream;  using std::istream;  using std::endl;
+using std::ostream;
+using std::istream;
+using std::endl;
 using std::domain_error;
 
 // PUBLIC MEMBER FUNCTIONS
@@ -224,7 +226,6 @@ void Matrix::swapRows(int r1, int r2)
     p[r2] = temp;
 }
 
-// TODO: транспонирование
 Matrix Matrix::transpose()
 {
     Matrix ret(cols_, rows_);
@@ -283,44 +284,16 @@ Matrix Matrix::createIdentity(int size)
     return temp;
 }
 
-//Matrix Matrix::solve(Matrix A, Matrix b)
-//{
-//    // Gaussian elimination
-//    for (int i = 0; i < A.rows_; ++i) {
-//        if (A.p[i][i] == 0) {
-//            // pivot 0 - throw error
-//            throw domain_error("Error: the coefficient matrix has 0 as a pivot. Please fix the input and try again.");
-//        }
-//        for (int j = i + 1; j < A.rows_; ++j) {
-//            for (int k = i + 1; k < A.cols_; ++k) {
-//                A.p[j][k] -= A.p[i][k] * (A.p[j][i] / A.p[i][i]);
-//                if (A.p[j][k] < EPS && A.p[j][k] > -1*EPS)
-//                    A.p[j][k] = 0;
-//            }
-//            b.p[j][0] -= b.p[i][0] * (A.p[j][i] / A.p[i][i]);
-//            if (A.p[j][0] < EPS && A.p[j][0] > -1*EPS)
-//                A.p[j][0] = 0;
-//            A.p[j][i] = 0;
-//        }
-//    }
-//
-//    // Back substitution
-//    Matrix x(b.rows_, 1);
-//    x.p[x.rows_ - 1][0] = b.p[x.rows_ - 1][0] / A.p[x.rows_ - 1][x.rows_ - 1];
-//    if (x.p[x.rows_ - 1][0] < EPS && x.p[x.rows_ - 1][0] > -1*EPS)
-//        x.p[x.rows_ - 1][0] = 0;
-//    for (int i = x.rows_ - 2; i >= 0; --i) {
-//        int sum = 0;
-//        for (int j = i + 1; j < x.rows_; ++j) {
-//            sum += A.p[i][j] * x.p[j][0];
-//        }
-//        x.p[i][0] = (b.p[i][0] - sum) / A.p[i][i];
-//        if (x.p[i][0] < EPS && x.p[i][0] > -1*EPS)
-//            x.p[i][0] = 0;
-//    }
-//
-//    return x;
-//}
+
+double Matrix::sum() {
+    double result{};
+    for (int i = 0; i < rows_; ++i) {
+        for (int j = 0; j < cols_; ++j) {
+            result += p[i][j];
+        }
+    }
+    return result;
+}
 
 Matrix Matrix::solve(Matrix A, Matrix b) {
     int n = A.getRows();
@@ -460,10 +433,6 @@ Matrix Matrix::gaussianEliminate()
     return Ab;
 }
 
-Matrix Matrix::gaussianEliminate2() {
-
-}
-
 Matrix Matrix::rowReduceFromGaussian()
 {
     Matrix R(*this);
@@ -486,7 +455,6 @@ Matrix Matrix::rowReduceFromGaussian()
 
         // zero out elements above pivots if pivot not 0
         if (R(i, j) != 0) {
-
             for (int t = i - 1; t >= 0; --t) {
                 for (int s = 0; s < cols; ++s) {
                     if (s != j) {
@@ -505,9 +473,7 @@ Matrix Matrix::rowReduceFromGaussian()
                     R(i, k) = 0;
             }
             R(i, j) = 1;
-
         }
-
         i--;
         j--;
     }
@@ -523,8 +489,8 @@ Matrix Matrix::inverse() // Нахождение обратной матрицы
 
     Matrix I = Matrix::createIdentity(rows_);
     Matrix AI = Matrix::augment(*this, I);
-    Matrix U = AI.gaussianEliminate(); // TODO: разобраться
-    Matrix IAInverse = U.rowReduceFromGaussian(); // TODO: разобраться
+    Matrix U = AI.gaussianEliminate();
+    Matrix IAInverse = U.rowReduceFromGaussian();
     Matrix AInverse(rows_, cols_);
     for (int i = 0; i < AInverse.rows_; ++i) {
         for (int j = 0; j < AInverse.cols_; ++j) {

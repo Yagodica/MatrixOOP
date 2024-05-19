@@ -6,6 +6,8 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <fstream>
+#include <sstream>
 
 class Matrix {
     public:
@@ -50,6 +52,7 @@ class Matrix {
         Matrix transpose();         // транспонирование матрицы
 
         double determinant() const; // вычисление определителя матрицы
+        double sum();
 
         static Matrix createIdentity(int);              // создание единичной матрицы
         static Matrix solve(Matrix, Matrix);            // решает систему линейных уравнений методом Гаусса с обратной подстановкой
@@ -60,7 +63,6 @@ class Matrix {
         // функции над расширенными матрицами
         static Matrix augment(Matrix&, Matrix&);        // объединение матриц в расширенную матрицу
         Matrix gaussianEliminate();                     // преобразование матрицы в ступенчатый вид
-        Matrix gaussianEliminate2();                    // преобразование матрицы в ступенчатый вид // TODO: Кал
         Matrix rowReduceFromGaussian();                 // сокращение матрицы до редуцированного ступенчатого вида
         Matrix inverse();                               // нахождение обратной матрицы
 
