@@ -1,5 +1,5 @@
-#ifndef __MATRIX_H__
-#define __MATRIX_H__
+#ifndef MATRIXOOP_MATRIX_H
+#define MATRIXOOP_MATRIX_H
 
 #include <stdexcept>
 #include <iostream>
