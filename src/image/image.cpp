@@ -1,6 +1,6 @@
 #include "image.h"
 
-Matrix Image::gaussianBlur(Matrix& image, double sigma, int ksize) {
+Matrix Image::gaussianBlur(Matrix &image, double sigma, int ksize) {
     // Calculate the size of the Gaussian kernel
     int kernelSize = ksize * 2 + 1;
 
@@ -47,8 +47,8 @@ Matrix Image::gaussianBlur(Matrix& image, double sigma, int ksize) {
     return blurredImage;
 }
 
-// Function to read a matrix from a PGM file
-Matrix Image::readMatrixFromPGMFile(const std::string& filename) {
+Matrix Image::readMatrixFromPGMFile(const std::string &filename) {
+    // Function to read a matrix from a PGM file
     std::ifstream file(filename, std::ios::binary);
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
@@ -78,8 +78,8 @@ Matrix Image::readMatrixFromPGMFile(const std::string& filename) {
     return matrix;
 }
 
-// Function to save a matrix to a PGM file
-void Image::saveMatrixToPGMFile(Matrix& matrix, const std::string& filename) {
+void Image::saveMatrixToPGMFile(Matrix &matrix, const std::string &filename) {
+    // Function to save a matrix to a PGM file
     std::ofstream file(filename, std::ios::binary);
     if (!file.is_open()) {
         throw std::runtime_error("Could not open file: " + filename);
