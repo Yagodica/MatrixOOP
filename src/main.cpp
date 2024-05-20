@@ -14,7 +14,7 @@ int main() {
         image.applyGaussianBlur();
 
         // Сохранение результата в новом PGM-файле
-        image.saveToPGMFile("output.pgm");
+        image.saveToPGMFile("output_test.pgm");
 
         cout << "Размытие по Гауссу успешно применено к изображению и сохранено в файл." << endl;
     }
