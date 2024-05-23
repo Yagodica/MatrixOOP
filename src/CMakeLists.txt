@@ -7,7 +7,8 @@ include_directories(image)
 # Add subdirectories
 add_subdirectory(matrix)
 add_subdirectory(image)
+add_subdirectory(wxWidgets)
 
 # Add executable
 add_executable(project main.cpp)
-target_link_libraries(project matrix image)
+target_link_libraries(project matrix image wx::net wx::core wx::base)
