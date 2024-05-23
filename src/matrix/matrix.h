@@ -43,7 +43,7 @@ class Matrix {
         Matrix& operator*=(double);         // умножение матрицы на скаляр
         Matrix& operator/=(const Matrix&);  // деление матриц
         Matrix& operator/=(double);         // деление матрицы на скаляр
-        Matrix  operator^(int);             // возведение матрицы в степень
+        Matrix operator^(int);              // возведение матрицы в степень
 
         friend std::ostream& operator<<(std::ostream&, const Matrix&);  // перегрузка оператора << для вывода матрицы
         friend std::istream& operator>>(std::istream&, Matrix&);        // перегрузка оператора >> для ввода матрицы
