@@ -65,11 +65,13 @@ MyFrame::MyFrame(const wxString& title)
     hbox->Add(btnSave, 0, wxRIGHT, 5);
 
     wxBoxSizer* inputSizer = new wxBoxSizer(wxHORIZONTAL);
-    inputSizer->Add(new wxStaticText(panel, wxID_ANY, wxT("ksize:")), 0, wxRIGHT, 5);
+    wxStaticText* ksizeLabel = new wxStaticText(panel, wxID_ANY, wxT("ksize:"));
+    inputSizer->Add(ksizeLabel, 0, wxRIGHT, 5);
     ksizeInput = new wxTextCtrl(panel, wxID_ANY);
     inputSizer->Add(ksizeInput, 0, wxRIGHT, 10);
 
-    inputSizer->Add(new wxStaticText(panel, wxID_ANY, wxT("sigma:")), 0, wxRIGHT, 5);
+    wxStaticText* sigmaLabel = new wxStaticText(panel, wxID_ANY, wxT("sigma:"));
+    inputSizer->Add(sigmaLabel, 0, wxRIGHT, 5);
     sigmaInput = new wxTextCtrl(panel, wxID_ANY);
     inputSizer->Add(sigmaInput, 0, wxRIGHT, 10);
 
@@ -77,6 +79,18 @@ MyFrame::MyFrame(const wxString& title)
     vbox->Add(hbox, 0, wxALIGN_CENTER | wxTOP | wxBOTTOM, 10);
 
     panel->SetSizer(vbox);
+
+    // Создаем шрифт
+    wxFont font(10, wxFONTFAMILY_DEFAULT, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL, false, "Segoe UI");
+
+    // Применяем шрифт к элементам управления
+    ksizeLabel->SetFont(font);
+    sigmaLabel->SetFont(font);
+    ksizeInput->SetFont(font);
+    sigmaInput->SetFont(font);
+    btnOpen->SetFont(font);
+    btnApply->SetFont(font);
+    btnSave->SetFont(font);
 }
 
 void MyFrame::OnOpen(wxCommandEvent& event) {

@@ -1,5 +1,6 @@
 #include "src/matrix/matrix.h"
 #include "gtest/gtest.h"
+#include <vector>
 
 // Тестирование конструктора по умолчанию и конструктора с параметрами
 TEST(MatrixTest, Constructors) {
@@ -10,6 +11,58 @@ TEST(MatrixTest, Constructors) {
     Matrix m2(3, 4);
     EXPECT_EQ(m2.getRows(), 3);
     EXPECT_EQ(m2.getCols(), 4);
+}
+
+// Тестируем преобразование вектора в матрицу с заданным порядком хранения
+TEST(MatrixFromVectorTest, RowMajorOrder) {
+    std::vector<std::vector<double>> vec = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+    };
+
+    Matrix mat = Matrix::fromVector(vec, true);
+
+    // Проверяем, что размер матрицы соответствует ожидаемому
+    EXPECT_EQ(mat.getRows(), 3);
+    EXPECT_EQ(mat.getCols(), 3);
+
+    // Проверяем, что элементы матрицы соответствуют элементам вектора
+    EXPECT_DOUBLE_EQ(mat(0, 0), 1);
+    EXPECT_DOUBLE_EQ(mat(0, 1), 2);
+    EXPECT_DOUBLE_EQ(mat(0, 2), 3);
+    EXPECT_DOUBLE_EQ(mat(1, 0), 4);
+    EXPECT_DOUBLE_EQ(mat(1, 1), 5);
+    EXPECT_DOUBLE_EQ(mat(1, 2), 6);
+    EXPECT_DOUBLE_EQ(mat(2, 0), 7);
+    EXPECT_DOUBLE_EQ(mat(2, 1), 8);
+    EXPECT_DOUBLE_EQ(mat(2, 2), 9);
+}
+
+// Тестируем преобразование вектора в матрицу с обратным порядком хранения
+TEST(MatrixFromVectorTest, ColumnMajorOrder) {
+    std::vector<std::vector<double>> vec = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+    };
+
+    Matrix mat = Matrix::fromVector(vec, false);
+
+    // Проверяем, что размер матрицы соответствует ожидаемому
+    EXPECT_EQ(mat.getRows(), 3);
+    EXPECT_EQ(mat.getCols(), 3);
+
+    // Проверяем, что элементы матрицы соответствуют элементам вектора
+    EXPECT_DOUBLE_EQ(mat(0, 0), 1);
+    EXPECT_DOUBLE_EQ(mat(0, 1), 4);
+    EXPECT_DOUBLE_EQ(mat(0, 2), 7);
+    EXPECT_DOUBLE_EQ(mat(1, 0), 2);
+    EXPECT_DOUBLE_EQ(mat(1, 1), 5);
+    EXPECT_DOUBLE_EQ(mat(1, 2), 8);
+    EXPECT_DOUBLE_EQ(mat(2, 0), 3);
+    EXPECT_DOUBLE_EQ(mat(2, 1), 6);
+    EXPECT_DOUBLE_EQ(mat(2, 2), 9);
 }
 
 // Тестирование оператора присваивания
