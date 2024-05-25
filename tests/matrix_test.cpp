@@ -2,17 +2,6 @@
 #include "gtest/gtest.h"
 #include <vector>
 
-// Тестирование конструктора по умолчанию и конструктора с параметрами
-TEST(MatrixTest, Constructors) {
-    Matrix m1;
-    EXPECT_EQ(m1.getRows(), 1);
-    EXPECT_EQ(m1.getCols(), 1);
-
-    Matrix m2(3, 4);
-    EXPECT_EQ(m2.getRows(), 3);
-    EXPECT_EQ(m2.getCols(), 4);
-}
-
 // Тестируем преобразование вектора в матрицу с заданным порядком хранения
 TEST(MatrixFromVectorTest, RowMajorOrder) {
     std::vector<std::vector<double>> vec = {
@@ -65,8 +54,22 @@ TEST(MatrixFromVectorTest, ColumnMajorOrder) {
     EXPECT_DOUBLE_EQ(mat(2, 2), 9);
 }
 
+// Тестирование конструктора по умолчанию
+TEST(MatrixConstructors, Default) {
+    Matrix m1;
+    EXPECT_EQ(m1.getRows(), 1);
+    EXPECT_EQ(m1.getCols(), 1);
+}
+
+// Тестирование конструктора с параметрами
+TEST(MatrixConstructors, WithParameters) {
+    Matrix m1(3, 4);
+    EXPECT_EQ(m1.getRows(), 3);
+    EXPECT_EQ(m1.getCols(), 4);
+}
+
 // Тестирование оператора присваивания
-TEST(MatrixTest, AssignmentOperator) {
+TEST(MatrixOperators, Assignment) {
     Matrix m1(2, 2);
     m1(0, 0) = 1;
     m1(0, 1) = 2;
@@ -82,7 +85,7 @@ TEST(MatrixTest, AssignmentOperator) {
 }
 
 // Тестирование оператора сложения
-TEST(MatrixTest, AdditionOperator) {
+TEST(MatrixOperators, Addition) {
     Matrix m1(2, 2);
     m1(0, 0) = 1;
     m1(0, 1) = 2;
@@ -104,7 +107,7 @@ TEST(MatrixTest, AdditionOperator) {
 }
 
 // Тестирование оператора () (индексирования)
-TEST(MatrixTest, OperatorParentheses) {
+TEST(MatrixOperators, Parentheses) {
     Matrix matrix(3, 3);
     matrix(0, 0) = 1;
     matrix(1, 1) = 2;
@@ -116,7 +119,7 @@ TEST(MatrixTest, OperatorParentheses) {
 }
 
 // Тестирование оператора [] (индексирования)
-TEST(MatrixTest, OperatorBrackets) {
+TEST(MatrixOperators, Brackets) {
     Matrix matrix(3, 3);
     matrix[0][0] = 1;
     matrix[1][1] = 2;
@@ -128,7 +131,7 @@ TEST(MatrixTest, OperatorBrackets) {
 }
 
 // Тестирование оператора == (равно)
-TEST(MatrixTest, OperatorEqual) {
+TEST(MatrixOperators, Equal) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
 
@@ -144,7 +147,7 @@ TEST(MatrixTest, OperatorEqual) {
 }
 
 // Тестирование оператора != (не равно)
-TEST(MatrixTest, OperatorNotEqual) {
+TEST(MatrixOperators, NotEqual) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
 
@@ -160,7 +163,7 @@ TEST(MatrixTest, OperatorNotEqual) {
 }
 
 // Тестирование оператора += (сложение с присваиванием)
-TEST(MatrixTest, OperatorPlusAssign) {
+TEST(MatrixOperators, PlusAssign) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
 
@@ -180,7 +183,7 @@ TEST(MatrixTest, OperatorPlusAssign) {
 }
 
 // Тестирование оператора -= (вычитание с присваиванием)
-TEST(MatrixTest, OperatorMinusAssign) {
+TEST(MatrixOperators, MinusAssign) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
 
@@ -200,7 +203,7 @@ TEST(MatrixTest, OperatorMinusAssign) {
 }
 
 // Тестирование оператора *= (умножение с присваиванием)
-TEST(MatrixTest, OperatorMultiplyAssign) {
+TEST(MatrixOperators, MultiplyAssign) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
 
@@ -238,7 +241,7 @@ TEST(MatrixTest, OperatorMultiplyAssign) {
 }
 
 // Тестирование оператора /= (деление с присваиванием)
-TEST(MatrixTest, OperatorDivideAssign) {
+TEST(MatrixOperators, DivideAssign) {
     Matrix matrix(3, 3);
 
     matrix(0, 0) = 2;
@@ -252,8 +255,46 @@ TEST(MatrixTest, OperatorDivideAssign) {
     EXPECT_FLOAT_EQ(matrix(2, 2), 2);
 }
 
+// Тестирование создания единичной матрицы
+TEST(MatrixGenerators, CreateIdentity) {
+    Matrix identityMatrix = Matrix::createIdentity(3);
+
+    EXPECT_EQ(identityMatrix(0, 0), 1);
+    EXPECT_EQ(identityMatrix(0, 1), 0);
+    EXPECT_EQ(identityMatrix(0, 2), 0);
+    EXPECT_EQ(identityMatrix(1, 0), 0);
+    EXPECT_EQ(identityMatrix(1, 1), 1);
+    EXPECT_EQ(identityMatrix(1, 2), 0);
+    EXPECT_EQ(identityMatrix(2, 0), 0);
+    EXPECT_EQ(identityMatrix(2, 1), 0);
+    EXPECT_EQ(identityMatrix(2, 2), 1);
+}
+
+// Тестирование создания случайной матрицы
+TEST(MatrixGenerators, RandomMatrix) {
+    Matrix randomMatrix = Matrix::randomMatrix(3, 4, -10, 10);
+
+    for (int i = 0; i < randomMatrix.getRows(); ++i) {
+        for (int j = 0; j < randomMatrix.getCols(); ++j) {
+            EXPECT_GE(randomMatrix(i, j), -10);
+            EXPECT_LE(randomMatrix(i, j), 10);
+        }
+    }
+}
+
+// Тестирование создания нулевой матрицы
+TEST(MatrixGenerators, ZeroMatrix) {
+    Matrix zeroMatrix = Matrix::zeroMatrix(3, 4);
+
+    for (int i = 0; i < zeroMatrix.getRows(); ++i) {
+        for (int j = 0; j < zeroMatrix.getCols(); ++j) {
+            EXPECT_EQ(zeroMatrix(i, j), 0);
+        }
+    }
+}
+
 // Тестирование транспонирования матрицы
-TEST(MatrixTest, Transpose) {
+TEST(MatrixOperations, Transpose) {
     Matrix matrix(3, 3);
 
     matrix(0, 0) = 1;
@@ -293,7 +334,7 @@ TEST(MatrixTest, Transpose) {
 }
 
 // Тестирование вычисления определителя матрицы
-TEST(MatrixTest, Determinant) {
+TEST(MatrixOperations, Determinant) {
     Matrix matrix2x2(2, 2);
     matrix2x2(0, 0) = 4;
     matrix2x2(0, 1) = 1;
@@ -316,23 +357,8 @@ TEST(MatrixTest, Determinant) {
     EXPECT_FLOAT_EQ(matrix3x3.determinant(), 0);
 }
 
-// Тестирование создания единичной матрицы
-TEST(MatrixTest, CreateIdentity) {
-    Matrix identityMatrix = Matrix::createIdentity(3);
-
-    EXPECT_EQ(identityMatrix(0, 0), 1);
-    EXPECT_EQ(identityMatrix(0, 1), 0);
-    EXPECT_EQ(identityMatrix(0, 2), 0);
-    EXPECT_EQ(identityMatrix(1, 0), 0);
-    EXPECT_EQ(identityMatrix(1, 1), 1);
-    EXPECT_EQ(identityMatrix(1, 2), 0);
-    EXPECT_EQ(identityMatrix(2, 0), 0);
-    EXPECT_EQ(identityMatrix(2, 1), 0);
-    EXPECT_EQ(identityMatrix(2, 2), 1);
-}
-
 // Тестирование решения системы линейных уравнений
-TEST(MatrixTest, Solve3x3) {
+TEST(MatrixOperations, Solve3x3) {
     Matrix A = {
             {1, 2, 3},
             {3, 5, 7},
@@ -352,7 +378,7 @@ TEST(MatrixTest, Solve3x3) {
     EXPECT_FLOAT_EQ(x(2, 0), 11);
 }
 
-TEST(MatrixTest, Solve4x4) {
+TEST(MatrixOperations, Solve4x4) {
     Matrix A1 = {
             {1, 2, 2, -3},
             {2, -1, 1, 2},
@@ -419,7 +445,7 @@ TEST(MatrixTest, Solve4x4) {
 }
 
 // Тестирование скалярного произведения векторов
-TEST(MatrixTest, DotProduct) {
+TEST(MatrixOperations, DotProduct) {
     Matrix vector1(3, 1);
     Matrix vector2(3, 1);
 
@@ -435,7 +461,7 @@ TEST(MatrixTest, DotProduct) {
 }
 
 // Тестирование объединения матриц в расширенную матрицу
-TEST(MatrixTest, Augment) {
+TEST(MatrixOperations, Augment) {
     Matrix A(3, 3);
     Matrix B(3, 2);
 
@@ -473,7 +499,7 @@ TEST(MatrixTest, Augment) {
 }
 
 // Тестирование преобразования матрицы в ступенчатый вид
-TEST(MatrixTest, GaussianEliminate) {
+TEST(MatrixOperations, GaussianEliminate) {
     Matrix A(3, 4);
 
     A(0, 0) = 1;
@@ -506,7 +532,7 @@ TEST(MatrixTest, GaussianEliminate) {
 }
 
 // Тестирование нахождения обратной матрицы
-TEST(MatrixTest, Inverse) {
+TEST(MatrixOperations, Inverse) {
     Matrix A(3, 3);
 
     A(0, 0) = 2;
@@ -532,31 +558,8 @@ TEST(MatrixTest, Inverse) {
     EXPECT_FLOAT_EQ(AInverse(2, 2), 24);
 }
 
-// Тестирование создания случайной матрицы
-TEST(MatrixTest, RandomMatrix) {
-    Matrix randomMatrix = Matrix::randomMatrix(3, 4, -10, 10);
-
-    for (int i = 0; i < randomMatrix.getRows(); ++i) {
-        for (int j = 0; j < randomMatrix.getCols(); ++j) {
-            EXPECT_GE(randomMatrix(i, j), -10);
-            EXPECT_LE(randomMatrix(i, j), 10);
-        }
-    }
-}
-
-// Тестирование создания нулевой матрицы
-TEST(MatrixTest, ZeroMatrix) {
-    Matrix zeroMatrix = Matrix::zeroMatrix(3, 4);
-
-    for (int i = 0; i < zeroMatrix.getRows(); ++i) {
-        for (int j = 0; j < zeroMatrix.getCols(); ++j) {
-            EXPECT_EQ(zeroMatrix(i, j), 0);
-        }
-    }
-}
-
 // Тестирование удаления столбцов матрицы
-TEST(MatrixTest, RemoveColumns) {
+TEST(MatrixOperations, RemoveColumns) {
     Matrix A(3, 5);
 
     A(0, 0) = 1;
