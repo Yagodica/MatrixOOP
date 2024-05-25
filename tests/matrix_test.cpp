@@ -74,14 +74,15 @@ TEST(MatrixConstructors, FromArray) {
     for (int i = 0; i < 2; i++) {
         arr[i] = new double[3];
     }
+
     arr[0][0] = 1;
     arr[0][1] = 2;
     arr[0][2] = 3;
     arr[1][0] = 4;
     arr[1][1] = 5;
     arr[1][2] = 6;
-
     Matrix m1(arr, 2, 3);
+
     EXPECT_EQ(m1(0, 0), 1);
     EXPECT_EQ(m1(0, 1), 2);
     EXPECT_EQ(m1(0, 2), 3);
@@ -117,58 +118,19 @@ TEST(MatrixConstructors, InitializerList) {
     EXPECT_EQ(m1(1, 2), 6);
 }
 
-// Тестирование оператора присваивания
-TEST(MatrixOperators, Assignment) {
-    Matrix m1(2, 2);
-    m1(0, 0) = 1;
-    m1(0, 1) = 2;
-    m1(1, 0) = 3;
-    m1(1, 1) = 4;
-
-    Matrix m2 = m1;
-
-    EXPECT_EQ(m2(0, 0), 1);
-    EXPECT_EQ(m2(0, 1), 2);
-    EXPECT_EQ(m2(1, 0), 3);
-    EXPECT_EQ(m2(1, 1), 4);
-}
-
-// Тестирование оператора сложения
-TEST(MatrixOperators, Addition) {
-    Matrix m1(2, 2);
-    m1(0, 0) = 1;
-    m1(0, 1) = 2;
-    m1(1, 0) = 3;
-    m1(1, 1) = 4;
-
-    Matrix m2(2, 2);
-    m2(0, 0) = 5;
-    m2(0, 1) = 6;
-    m2(1, 0) = 7;
-    m2(1, 1) = 8;
-
-    Matrix m3 = m1 + m2;
-
-    EXPECT_EQ(m3(0, 0), 6);
-    EXPECT_EQ(m3(0, 1), 8);
-    EXPECT_EQ(m3(1, 0), 10);
-    EXPECT_EQ(m3(1, 1), 12);
-}
-
 // Тестирование оператора () (индексирования)
-TEST(MatrixOperators, Parentheses) {
+TEST(MatrixIndexation, Parentheses) {
     Matrix matrix(3, 3);
     matrix(0, 0) = 1;
     matrix(1, 1) = 2;
     matrix(2, 2) = 3;
-
     EXPECT_EQ(matrix(0, 0), 1);
     EXPECT_EQ(matrix(1, 1), 2);
     EXPECT_EQ(matrix(2, 2), 3);
 }
 
 // Тестирование оператора [] (индексирования)
-TEST(MatrixOperators, Brackets) {
+TEST(MatrixIndexation, Brackets) {
     Matrix matrix(3, 3);
     matrix[0][0] = 1;
     matrix[1][1] = 2;
@@ -179,15 +141,37 @@ TEST(MatrixOperators, Brackets) {
     EXPECT_EQ(matrix[2][2], 3);
 }
 
-// Тестирование оператора == (равно)
-TEST(MatrixOperators, Equal) {
-    Matrix matrix1(3, 3);
-    Matrix matrix2(3, 3);
+// Тестирование оператора присваивания
+TEST(MatrixOverload, Assignment) {
+    Matrix m1(2, 2);
+    m1 = {{1, 2}, {3, 4}};
+    Matrix m2 = m1;
+    EXPECT_EQ(m2(0, 0), 1);
+    EXPECT_EQ(m2(0, 1), 2);
+    EXPECT_EQ(m2(1, 0), 3);
+    EXPECT_EQ(m2(1, 1), 4);
+}
 
+// Тестирование оператора сложения
+TEST(MatrixOverload, Addition) {
+    Matrix m1(2, 2);
+    m1 = {{1, 2}, {3, 4}};
+    Matrix m2(2, 2);
+    m2 = {{5, 6}, {7, 8}};
+    Matrix m3 = m1 + m2;
+    EXPECT_EQ(m3(0, 0), 6);
+    EXPECT_EQ(m3(0, 1), 8);
+    EXPECT_EQ(m3(1, 0), 10);
+    EXPECT_EQ(m3(1, 1), 12);
+}
+
+// Тестирование оператора == (равно)
+TEST(MatrixOverload, Equal) {
+    Matrix matrix1(3, 3);
     matrix1(0, 0) = 1;
     matrix1(1, 1) = 2;
     matrix1(2, 2) = 3;
-
+    Matrix matrix2(3, 3);
     matrix2(0, 0) = 1;
     matrix2(1, 1) = 2;
     matrix2(2, 2) = 3;
@@ -196,174 +180,92 @@ TEST(MatrixOperators, Equal) {
 }
 
 // Тестирование оператора != (не равно)
-TEST(MatrixOperators, NotEqual) {
+TEST(MatrixOverload, NotEqual) {
     Matrix matrix1(3, 3);
-    Matrix matrix2(3, 3);
-
     matrix1(0, 0) = 1;
     matrix1(1, 1) = 2;
     matrix1(2, 2) = 3;
-
+    Matrix matrix2(3, 3);
     matrix2(0, 0) = 1;
     matrix2(1, 1) = 2;
     matrix2(2, 2) = 4;
-
     EXPECT_TRUE(matrix1 != matrix2);
 }
 
 // Тестирование оператора += (сложение с присваиванием)
-TEST(MatrixOperators, PlusAssign) {
+TEST(MatrixOverload, PlusAssign) {
     Matrix matrix1(3, 3);
-    Matrix matrix2(3, 3);
-
     matrix1(0, 0) = 1;
     matrix1(1, 1) = 2;
     matrix1(2, 2) = 3;
-
+    Matrix matrix2(3, 3);
     matrix2(0, 0) = 1;
     matrix2(1, 1) = 2;
     matrix2(2, 2) = 3;
-
     matrix1 += matrix2;
-
     EXPECT_EQ(matrix1(0, 0), 2);
     EXPECT_EQ(matrix1(1, 1), 4);
     EXPECT_EQ(matrix1(2, 2), 6);
 }
 
 // Тестирование оператора -= (вычитание с присваиванием)
-TEST(MatrixOperators, MinusAssign) {
+TEST(MatrixOverload, MinusAssign) {
     Matrix matrix1(3, 3);
-    Matrix matrix2(3, 3);
-
     matrix1(0, 0) = 3;
     matrix1(1, 1) = 4;
     matrix1(2, 2) = 5;
-
+    Matrix matrix2(3, 3);
     matrix2(0, 0) = 1;
     matrix2(1, 1) = 2;
     matrix2(2, 2) = 3;
-
     matrix1 -= matrix2;
-
     EXPECT_EQ(matrix1(0, 0), 2);
     EXPECT_EQ(matrix1(1, 1), 2);
     EXPECT_EQ(matrix1(2, 2), 2);
 }
 
 // Тестирование оператора *= (умножение с присваиванием)
-TEST(MatrixOperators, MultiplyAssign) {
+TEST(MatrixOverload, MultiplyAssign) {
     Matrix matrix1(3, 3);
     Matrix matrix2(3, 3);
-
-    matrix1(0, 0) = 1;
-    matrix1(0, 1) = 2;
-    matrix1(0, 2) = 3;
-    matrix1(1, 0) = 4;
-    matrix1(1, 1) = 5;
-    matrix1(1, 2) = 6;
-    matrix1(2, 0) = 7;
-    matrix1(2, 1) = 8;
-    matrix1(2, 2) = 9;
-
-    matrix2(0, 0) = 9;
-    matrix2(0, 1) = 8;
-    matrix2(0, 2) = 7;
-    matrix2(1, 0) = 6;
-    matrix2(1, 1) = 5;
-    matrix2(1, 2) = 4;
-    matrix2(2, 0) = 3;
-    matrix2(2, 1) = 2;
-    matrix2(2, 2) = 1;
-
+    matrix1 = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+    };
+    matrix2 = {
+            {9, 8, 7},
+            {6, 5, 4},
+            {3, 2, 1}
+    };
     matrix1 *= matrix2;
-
-    EXPECT_EQ(matrix1(0, 0), 30);
-    EXPECT_EQ(matrix1(0, 1), 24);
-    EXPECT_EQ(matrix1(0, 2), 18);
-    EXPECT_EQ(matrix1(1, 0), 84);
-    EXPECT_EQ(matrix1(1, 1), 69);
-    EXPECT_EQ(matrix1(1, 2), 54);
-    EXPECT_EQ(matrix1(2, 0), 138);
-    EXPECT_EQ(matrix1(2, 1), 114);
-    EXPECT_EQ(matrix1(2, 2), 90);
+    EXPECT_EQ(matrix1(0, 0), 30); EXPECT_EQ(matrix1(0, 1), 24); EXPECT_EQ(matrix1(0, 2), 18);
+    EXPECT_EQ(matrix1(1, 0), 84); EXPECT_EQ(matrix1(1, 1), 69); EXPECT_EQ(matrix1(1, 2), 54);
+    EXPECT_EQ(matrix1(2, 0), 138);EXPECT_EQ(matrix1(2, 1), 114);EXPECT_EQ(matrix1(2, 2), 90);
 }
 
 // Тестирование оператора /= (деление с присваиванием)
-TEST(MatrixOperators, DivideAssign) {
-    Matrix matrix(3, 3);
-
-    matrix(0, 0) = 2;
-    matrix(1, 1) = 3;
-    matrix(2, 2) = 4;
-
-    matrix /= 2;
-
-    EXPECT_FLOAT_EQ(matrix(0, 0), 1);
-    EXPECT_FLOAT_EQ(matrix(1, 1), 1.5);
-    EXPECT_FLOAT_EQ(matrix(2, 2), 2);
-}
-
-// Тестирование создания единичной матрицы
-TEST(MatrixGenerators, CreateIdentity) {
-    Matrix identityMatrix = Matrix::createIdentity(3);
-
-    EXPECT_EQ(identityMatrix(0, 0), 1);
-    EXPECT_EQ(identityMatrix(0, 1), 0);
-    EXPECT_EQ(identityMatrix(0, 2), 0);
-    EXPECT_EQ(identityMatrix(1, 0), 0);
-    EXPECT_EQ(identityMatrix(1, 1), 1);
-    EXPECT_EQ(identityMatrix(1, 2), 0);
-    EXPECT_EQ(identityMatrix(2, 0), 0);
-    EXPECT_EQ(identityMatrix(2, 1), 0);
-    EXPECT_EQ(identityMatrix(2, 2), 1);
-}
-
-// Тестирование создания случайной матрицы
-TEST(MatrixGenerators, RandomMatrix) {
-    Matrix randomMatrix = Matrix::randomMatrix(3, 4, -10, 10);
-
-    for (int i = 0; i < randomMatrix.getRows(); ++i) {
-        for (int j = 0; j < randomMatrix.getCols(); ++j) {
-            EXPECT_GE(randomMatrix(i, j), -10);
-            EXPECT_LE(randomMatrix(i, j), 10);
-        }
-    }
-}
-
-// Тестирование создания нулевой матрицы
-TEST(MatrixGenerators, ZeroMatrix) {
-    Matrix zeroMatrix = Matrix::zeroMatrix(3, 4);
-
-    for (int i = 0; i < zeroMatrix.getRows(); ++i) {
-        for (int j = 0; j < zeroMatrix.getCols(); ++j) {
-            EXPECT_EQ(zeroMatrix(i, j), 0);
-        }
-    }
+TEST(MatrixOverload, DivideAssign) {
+    Matrix matrix1(3, 3);
+    matrix1(0, 0) = 2;
+    matrix1(1, 1) = 3;
+    matrix1(2, 2) = 4;
+    Matrix matrix2(3, 3);
+    matrix2(0, 0) = 1;
+    matrix2(1, 1) = 2;
+    matrix2(2, 2) = 3;
+    matrix1 /= matrix2;
+    EXPECT_FLOAT_EQ(matrix1(0, 0), 2.0);
+    EXPECT_FLOAT_EQ(matrix1(1, 1), 1.5);
+    EXPECT_FLOAT_EQ(matrix1(2, 2), 1.3333333);
 }
 
 // Тестирование транспонирования матрицы
 TEST(MatrixOperations, Transpose) {
-    Matrix matrix(3, 3);
-
-    matrix(0, 0) = 1;
-    matrix(0, 1) = 2;
-    matrix(0, 2) = 3;
-    matrix(1, 0) = 4;
-    matrix(1, 1) = 5;
-    matrix(1, 2) = 6;
-    matrix(2, 0) = 7;
-    matrix(2, 1) = 8;
-    matrix(2, 2) = 9;
-
-    Matrix matrix2 = {
-            {1, 2, 3},
-            {4, 5, 6}
-    };
-
+    Matrix matrix = {{1, 2, 3},{4, 5, 6},{7, 8, 9}};
+    Matrix matrix2 = {{1, 2, 3},{4, 5, 6}};
     Matrix transposedMatrix = matrix.transpose();
     Matrix transposedMatrix2 = matrix2.transpose();
-
     EXPECT_EQ(transposedMatrix(0, 0), 1);
     EXPECT_EQ(transposedMatrix(0, 1), 4);
     EXPECT_EQ(transposedMatrix(0, 2), 7);
@@ -373,7 +275,6 @@ TEST(MatrixOperations, Transpose) {
     EXPECT_EQ(transposedMatrix(2, 0), 3);
     EXPECT_EQ(transposedMatrix(2, 1), 6);
     EXPECT_EQ(transposedMatrix(2, 2), 9);
-
     EXPECT_EQ(transposedMatrix(0, 0), 1);
     EXPECT_EQ(transposedMatrix(0, 1), 4);
     EXPECT_EQ(transposedMatrix(1, 0), 2);
@@ -384,25 +285,16 @@ TEST(MatrixOperations, Transpose) {
 
 // Тестирование вычисления определителя матрицы
 TEST(MatrixOperations, Determinant) {
-    Matrix matrix2x2(2, 2);
-    matrix2x2(0, 0) = 4;
-    matrix2x2(0, 1) = 1;
-    matrix2x2(1, 0) = 3;
-    matrix2x2(1, 1) = 2;
-
+    Matrix matrix2x2 = {
+            {4, 1},
+            {3, 2}
+    };
     EXPECT_FLOAT_EQ(matrix2x2.determinant(), 5);
-
-    Matrix matrix3x3(3, 3);
-    matrix3x3(0, 0) = 1;
-    matrix3x3(0, 1) = 2;
-    matrix3x3(0, 2) = 3;
-    matrix3x3(1, 0) = 4;
-    matrix3x3(1, 1) = 5;
-    matrix3x3(1, 2) = 6;
-    matrix3x3(2, 0) = 7;
-    matrix3x3(2, 1) = 8;
-    matrix3x3(2, 2) = 9;
-
+    Matrix matrix3x3 = {
+            {1, 2, 3},
+            {4, 5, 6},
+            {7, 8, 9}
+    };
     EXPECT_FLOAT_EQ(matrix3x3.determinant(), 0);
 }
 
@@ -413,79 +305,37 @@ TEST(MatrixOperations, Solve3x3) {
             {3, 5, 7},
             {1, 3, 4}
     };
-
     Matrix B = {
             {3},
             {0},
             {1}
     };
-
     Matrix x = Matrix::solve(A, B);
-
     EXPECT_FLOAT_EQ(x(0, 0), -4);
     EXPECT_FLOAT_EQ(x(1, 0), -13);
     EXPECT_FLOAT_EQ(x(2, 0), 11);
 }
 
 TEST(MatrixOperations, Solve4x4) {
-    Matrix A1 = {
-            {1, 2, 2, -3},
-            {2, -1, 1, 2},
-            {2, 4, -3, 5},
-            {2, 1 , 2, -1}
-    };
-
-    Matrix B1 = {
-            {-2},
-            {-1},
-            {4},
-            {-2}
-    };
-
-    Matrix A2 = {
-            {1, 2, 3, 4},
-            {-1, 2, -3, 4},
-            {1, 1, -1, 1},
-            {1, 1 , 1, 1}
-    };
-
-    Matrix B2 = {
-            {30},
-            {10},
-            {3},
-            {10}
-    };
-
-    Matrix A3 = {
-            {3, 1, -2, -22},
-            {2, -1, 2, 2},
-            {2, 1, -1, -1},
-            {1, 1 , -3, 2}
-    };
-
-    Matrix B3 = {
-            {-2},
-            {2},
-            {-1},
-            {-3}
-    };
-
+    Matrix A1 = {{1, 2, 2, -3},{2, -1, 1, 2},{2, 4, -3, 5},{2, 1 , 2, -1}};
+    Matrix B1 = {{-2},{-1},{4},{-2}};
+    Matrix A2 = {{1, 2, 3, 4},{-1, 2, -3, 4},{1, 1, -1, 1},{1, 1 , 1, 1}};
+    Matrix B2 = {{30},{10},{3},{10}};
+    Matrix A3 = {{3, 1, -2, -22},{2, -1, 2, 2},{2, 1, -1, -1},{1, 1 , -3, 2}};
+    Matrix B3 = {{-2},{2},{-1},{-3}};
     Matrix res1 = Matrix::solve(A1, B1);
     Matrix res2 = Matrix::solve(A2, B2);
     Matrix res3 = Matrix::solve(A3, B3);
-
     // res1
     EXPECT_FLOAT_EQ(res1(0, 0), -0.25);
     EXPECT_FLOAT_EQ(res1(1, 0), 0.25);
     EXPECT_FLOAT_EQ(res1(2, 0), -0.75);
     EXPECT_FLOAT_EQ(res1(3, 0), 0.25);
-
     // res2
     EXPECT_FLOAT_EQ(res2(0, 0), -0.5);
     EXPECT_FLOAT_EQ(res2(1, 0), 4);
     EXPECT_FLOAT_EQ(res2(2, 0), 3.5);
     EXPECT_FLOAT_EQ(res2(3, 0), 3);
-
     // res3
     EXPECT_FLOAT_EQ(res3(0, 0), 0);
     EXPECT_FLOAT_EQ(res3(1, 0), 0);
@@ -509,8 +359,29 @@ TEST(MatrixOperations, DotProduct) {
     EXPECT_FLOAT_EQ(Matrix::dotProduct(vector1, vector2), 32);
 }
 
+// Тестирование удаления столбцов матрицы
+TEST(MatrixOperations, RemoveColumns) {
+    Matrix A = {
+            {1, 2, 3, 4, 5},
+            {6, 7, 8, 9, 10},
+            {11, 12, 13, 14, 15}
+    };
+
+    Matrix C = A.removeColumns(1, 3);
+
+    EXPECT_EQ(C.getRows(), 3);
+    EXPECT_EQ(C.getCols(), 2);
+
+    EXPECT_EQ(C(0, 0), 1);
+    EXPECT_EQ(C(0, 1), 5);
+    EXPECT_EQ(C(1, 0), 6);
+    EXPECT_EQ(C(1, 1), 10);
+    EXPECT_EQ(C(2, 0), 11);
+    EXPECT_EQ(C(2, 1), 15);
+}
+
 // Тестирование объединения матриц в расширенную матрицу
-TEST(MatrixOperations, Augment) {
+TEST(MatrixExtendedOperations, Augment) {
     Matrix A(3, 3);
     Matrix B(3, 2);
 
@@ -548,7 +419,7 @@ TEST(MatrixOperations, Augment) {
 }
 
 // Тестирование преобразования матрицы в ступенчатый вид
-TEST(MatrixOperations, GaussianEliminate) {
+TEST(MatrixExtendedOperations, GaussianEliminate) {
     Matrix A(3, 4);
 
     A(0, 0) = 1;
@@ -581,7 +452,7 @@ TEST(MatrixOperations, GaussianEliminate) {
 }
 
 // Тестирование нахождения обратной матрицы
-TEST(MatrixOperations, Inverse) {
+TEST(MatrixExtendedOperations, Inverse) {
     Matrix A(3, 3);
 
     A(0, 0) = 2;
@@ -607,34 +478,35 @@ TEST(MatrixOperations, Inverse) {
     EXPECT_FLOAT_EQ(AInverse(2, 2), 24);
 }
 
-// Тестирование удаления столбцов матрицы
-TEST(MatrixOperations, RemoveColumns) {
-    Matrix A(3, 5);
+// Тестирование создания единичной матрицы
+TEST(MatrixGenerators, CreateIdentity) {
+    Matrix iMatrix = Matrix::createIdentity(3);
+    EXPECT_EQ(iMatrix(0, 0), 1); EXPECT_EQ(iMatrix(0, 1), 0); EXPECT_EQ(iMatrix(0, 2), 0);
+    EXPECT_EQ(iMatrix(1, 0), 0); EXPECT_EQ(iMatrix(1, 1), 1); EXPECT_EQ(iMatrix(1, 2), 0);
+    EXPECT_EQ(iMatrix(2, 0), 0); EXPECT_EQ(iMatrix(2, 1), 0); EXPECT_EQ(iMatrix(2, 2), 1);
+}
 
-    A(0, 0) = 1;
-    A(0, 1) = 2;
-    A(0, 2) = 3;
-    A(0, 3) = 4;
-    A(0, 4) = 5;
-    A(1, 0) = 6;
-    A(1, 1) = 7;
-    A(1, 2) = 8;
-    A(1, 3) = 9;
-    A(1, 4) = 10;
-    A(2, 0) = 11;
-    A(2, 1) = 12;
-    A(2, 2) = 13;
-    A(2, 3) = 14;
-    A(2, 4) = 15;
+// Тестирование создания случайной матрицы
+TEST(MatrixGenerators, RandomMatrix) {
+    Matrix randomMatrix = Matrix::randomMatrix(3, 4, -10, 10);
 
-    Matrix C = A.removeColumns(1, 3);
+    for (int i = 0; i < randomMatrix.getRows(); ++i) {
+        for (int j = 0; j < randomMatrix.getCols(); ++j) {
+            EXPECT_GE(randomMatrix(i, j), -10);
+            EXPECT_LE(randomMatrix(i, j), 10);
+        }
+    }
+}
 
-    EXPECT_EQ(C(0, 0), 1);
-    EXPECT_EQ(C(0, 1), 5);
-    EXPECT_EQ(C(1, 0), 6);
-    EXPECT_EQ(C(1, 1), 10);
-    EXPECT_EQ(C(2, 0), 11);
-    EXPECT_EQ(C(2, 1), 15);
+// Тестирование создания нулевой матрицы
+TEST(MatrixGenerators, ZeroMatrix) {
+    Matrix zeroMatrix = Matrix::zeroMatrix(3, 4);
+
+    for (int i = 0; i < zeroMatrix.getRows(); ++i) {
+        for (int j = 0; j < zeroMatrix.getCols(); ++j) {
+            EXPECT_EQ(zeroMatrix(i, j), 0);
+        }
+    }
 }
 
 
