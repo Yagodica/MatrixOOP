@@ -68,6 +68,55 @@ TEST(MatrixConstructors, WithParameters) {
     EXPECT_EQ(m1.getCols(), 4);
 }
 
+// Тестирование конструктора матрицы из двумерного массива
+TEST(MatrixConstructors, FromArray) {
+    double** arr = new double*[2];
+    for (int i = 0; i < 2; i++) {
+        arr[i] = new double[3];
+    }
+    arr[0][0] = 1;
+    arr[0][1] = 2;
+    arr[0][2] = 3;
+    arr[1][0] = 4;
+    arr[1][1] = 5;
+    arr[1][2] = 6;
+
+    Matrix m1(arr, 2, 3);
+    EXPECT_EQ(m1(0, 0), 1);
+    EXPECT_EQ(m1(0, 1), 2);
+    EXPECT_EQ(m1(0, 2), 3);
+    EXPECT_EQ(m1(1, 0), 4);
+    EXPECT_EQ(m1(1, 1), 5);
+    EXPECT_EQ(m1(1, 2), 6);
+}
+
+// Тестирование копирующего конструктора
+TEST(MatrixConstructors, Copy) {
+    Matrix m1(3, 4);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            m1(i, j) = i * 4 + j + 1;
+        }
+    }
+    Matrix m2(m1);
+    for (int i = 0; i < 3; i++) {
+        for (int j = 0; j < 4; j++) {
+            EXPECT_EQ(m2(i, j), i * 4 + j + 1);
+        }
+    }
+}
+
+// Тестирование конструктора из списка инициализации
+TEST(MatrixConstructors, InitializerList) {
+    Matrix m1 = {{1, 2, 3}, {4, 5, 6}};
+    EXPECT_EQ(m1(0, 0), 1);
+    EXPECT_EQ(m1(0, 1), 2);
+    EXPECT_EQ(m1(0, 2), 3);
+    EXPECT_EQ(m1(1, 0), 4);
+    EXPECT_EQ(m1(1, 1), 5);
+    EXPECT_EQ(m1(1, 2), 6);
+}
+
 // Тестирование оператора присваивания
 TEST(MatrixOperators, Assignment) {
     Matrix m1(2, 2);
