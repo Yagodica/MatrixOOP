@@ -401,21 +401,9 @@ TEST(MatrixExtendedOperations, Augment) {
 
     Matrix AB = Matrix::augment(A, B);
 
-    EXPECT_EQ(AB(0, 0), 1);
-    EXPECT_EQ(AB(0, 1), 2);
-    EXPECT_EQ(AB(0, 2), 3);
-    EXPECT_EQ(AB(0, 3), 10);
-    EXPECT_EQ(AB(0, 4), 11);
-    EXPECT_EQ(AB(1, 0), 4);
-    EXPECT_EQ(AB(1, 1), 5);
-    EXPECT_EQ(AB(1, 2), 6);
-    EXPECT_EQ(AB(1, 3), 12);
-    EXPECT_EQ(AB(1, 4), 13);
-    EXPECT_EQ(AB(2, 0), 7);
-    EXPECT_EQ(AB(2, 1), 8);
-    EXPECT_EQ(AB(2, 2), 9);
-    EXPECT_EQ(AB(2, 3), 14);
-    EXPECT_EQ(AB(2, 4), 15);
+    EXPECT_EQ(AB(0, 0), 1); EXPECT_EQ(AB(0, 1), 2); EXPECT_EQ(AB(0, 2), 3); EXPECT_EQ(AB(0, 3), 10); EXPECT_EQ(AB(0, 4), 11);
+    EXPECT_EQ(AB(1, 0), 4); EXPECT_EQ(AB(1, 1), 5); EXPECT_EQ(AB(1, 2), 6); EXPECT_EQ(AB(1, 3), 12); EXPECT_EQ(AB(1, 4), 13);
+    EXPECT_EQ(AB(2, 0), 7); EXPECT_EQ(AB(2, 1), 8); EXPECT_EQ(AB(2, 2), 9); EXPECT_EQ(AB(2, 3), 14); EXPECT_EQ(AB(2, 4), 15);
 }
 
 // Тестирование преобразования матрицы в ступенчатый вид
